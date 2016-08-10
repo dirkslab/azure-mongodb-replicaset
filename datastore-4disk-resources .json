@@ -138,16 +138,6 @@
               },
               "caching": "None",
               "createOption": "Empty"
-            },
-            {
-              "name": "datadisk5",
-              "diskSizeGB": "[parameters('machineSettings').diskSize]",
-              "lun": 4,
-              "vhd": {
-                "Uri": "[concat('http://', parameters('storageSettings').name, parameters('storageSettings').map[copyindex()],'.blob.core.windows.net/vhds/',variables('vmName'), copyindex(),'-datadisk5.vhd')]"
-              },
-              "caching": "None",
-              "createOption": "Empty"
             }
           ]
         },
