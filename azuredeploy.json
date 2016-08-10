@@ -240,7 +240,7 @@
             "value": {
               "vmSize": "[variables('tshirtSize').vmSize]",
               "diskSize": "[variables('tshirtSize').diskSize]",
-              "vmCount": 1,
+              "vmCount": 2,
               "availabilitySet": "[variables('availabilitySetSettings').name]",
               "numberOfSlavesInstances": "[variables('tshirtSize').slaveCount]"
             }
