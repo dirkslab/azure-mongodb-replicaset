@@ -89,11 +89,11 @@
       "vmSize": "Standard_A3",
       "diskSize": 1023,
       "vmTemplate": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources .json')]",
-      "vmCount": 2,
+      "vmCount": 3,
       "slaveCount": 1,
       "storage": {
         "name": "[parameters('storageAccountNamePrefix')]",
-        "count": 2,
+        "count": 3,
         "pool": "db",
         "map": [
           0,
@@ -240,7 +240,7 @@
             "value": {
               "vmSize": "[variables('tshirtSize').vmSize]",
               "diskSize": "[variables('tshirtSize').diskSize]",
-              "vmCount": 2,
+              "vmCount": "[variables('tshirtSize').vmCount]",
               "availabilitySet": "[variables('availabilitySetSettings').name]",
               "numberOfSlavesInstances": "[variables('tshirtSize').slaveCount]"
             }
