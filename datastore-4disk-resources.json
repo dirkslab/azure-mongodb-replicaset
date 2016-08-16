@@ -8,6 +8,9 @@
     "osSettings": {
       "type": "object"
     },
+    "vmScripts": {
+      "type": "object"
+    },
     "storageSettings": {
       "type": "object"
     },
@@ -147,6 +150,29 @@
               "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nicName'), copyindex()) )]"
             }
           ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(variables('vmName'), copyindex(), '/setup-Mongo-repl-server')]",
+      "apiVersion": "2015-05-01-preview",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'), copyindex())]"
+      ],
+      "copy": {
+        "name": "scriptCopyLoop",
+        "count": "[variables('vmCount')]"
+      },
+      "properties": {
+        "publisher": "Microsoft.OSTCExtensions",
+        "type": "CustomScriptForLinux",
+        "typeHandlerVersion": "1.5",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+          "fileUris": "[parameters('vmScripts').scriptsToDownload]",
+          "commandToExecute": "[parameters('vmScripts').commandToExecute]"
         }
       }
     }
