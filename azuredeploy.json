@@ -84,8 +84,8 @@
     "tshirtSizeMedium": {
       "vmSize": "Standard_A3",
       "diskSize": 1023,
-      "vmTemplate": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources .json')]",
-      "vmTemplateSlave": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources-slave .json')]",
+      "vmTemplate": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources.json')]",
+      "vmTemplateSlave": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources-slave.json')]",
       "vmCount": 3,
       "slaveCount": 1,
       "storage": {
