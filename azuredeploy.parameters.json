@@ -3,22 +3,26 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "storageAccountNamePrefix": {
-      "value": "cgnsparkstorev1"
+      "value": "[uniqueString(resourceGroup().id)]"
     },
-    "adminUsername": {
-      "value": "ppadmin"
-    },
-    "domainName": {
-      "value": "cgnsparkv1"
-    },
-    "sparkversion": {
-      "value": "1.2.1"
-    },
-    "jumpbox": {
-      "value": "Disabled"
-    },
+    {
+      "storageAccountNamePrefixSlave": {
+        "value": "[concat(uniqueString(resourceGroup().id),Slave)]"
+      },
+      "adminUsername": {
+        "value": "ppadmin"
+      },
+      "domainName": {
+        "value": "cgnsparkv1"
+      },
+      "sparkversion": {
+        "value": "1.2.1"
+      },
+      "jumpbox": {
+        "value": "Disabled"
+      },
       "tshirtSize": {
-          "value": "Medium"
+        "value": "Medium"
       }
+    }
   }
-}

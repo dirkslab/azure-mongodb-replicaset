@@ -21,7 +21,20 @@
       "location": "[resourceGroup().location]",
       "copy": {
         "name": "dbStoragePoolLoop",
-        "count": "[parameters('storageSettings').count]"
+        "count": "[parameters('storageSettings').vmCount]"
+      },
+      "properties": {
+        "accountType": "Standard_LRS"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[concat(parameters('storageSettings').nameSlave, copyindex())]",
+      "apiVersion": "2015-05-01-preview",
+      "location": "[resourceGroup().location]",
+      "copy": {
+        "name": "dbStoragePoolLoop",
+        "count": "[parameters('storageSettings').slaveCount]"
       },
       "properties": {
         "accountType": "Standard_LRS"

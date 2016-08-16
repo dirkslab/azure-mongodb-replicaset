@@ -8,6 +8,12 @@
         "description": "Unique name of the new storage account that will be created to store virtual machine VHDs"
       }
     },
+    "storageAccountNamePrefixSlave": {
+      "type": "string",
+      "metadata": {
+        "description": "Unique name of the new storage account that will be created to store Slave virtual machine VHDs"
+      }
+    },
     "domainName": {
       "type": "string",
       "metadata": {
@@ -93,6 +99,7 @@
       "slaveCount": 1,
       "storage": {
         "name": "[parameters('storageAccountNamePrefix')]",
+        "nameSlave": "[parameters('storageAccountNamePrefixSlave')]",
         "count": 4,
         "pool": "db",
         "map": [
