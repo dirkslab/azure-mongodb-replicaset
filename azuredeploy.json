@@ -71,7 +71,7 @@
       "vmCount": 2,
       "slaveCount": 1,
       "storage": {
-        "name": "[parameters('storageAccountNamePrefix')]",
+        "name": "[variables('storageAccountNamePrefix')]",
         "count": 1,
         "pool": "db",
         "map": [
@@ -109,7 +109,7 @@
       "vmCount": 3,
       "slaveCount": 2,
       "storage": {
-        "name": "[parameters('storageAccountNamePrefix')]",
+        "name": "[variables('storageAccountNamePrefix')]",
         "count": 2,
         "pool": "db",
         "map": [
@@ -127,7 +127,7 @@
       "vmCount": 4,
       "slaveCount": 3,
       "storage": {
-        "name": "[parameters('storageAccountNamePrefix')]",
+        "name": "[variables('storageAccountNamePrefix')]",
         "count": 2,
         "pool": "db",
         "map": [
