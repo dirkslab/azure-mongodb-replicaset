@@ -6,7 +6,7 @@
       "value": "[uniqueString(resourceGroup().id)]"
     },
       "storageAccountNamePrefixSlave": {
-        "value": "[concat(uniqueString(resourceGroup().id),'Slave')]"
+        "value": "[concat(uniqueString(resourceGroup().id),'slave')]"
       },
       "adminUsername": {
         "value": "ppadmin"
