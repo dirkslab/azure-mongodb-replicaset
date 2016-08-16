@@ -72,7 +72,7 @@
     }
   },
   "variables": {
-    "templateBaseUrl": "https://github.com/dirkslab/azure-mongodb-replicaset/tree/skeleton2/",
+    "templateBaseUrl": "https://raw.githubusercontent.com/dirkslab/azure-mongodb-replicaset/skeleton2/",
     "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'shared-resources.json')]",
     "tshirtSizeSmall": {
       "vmSize": "Standard_A1",
