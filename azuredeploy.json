@@ -258,9 +258,6 @@
           },
           "vmScripts": {
             "value": "[variables('vmScripts')]"
-          },
-          "commandToExecute": {
-            "value": "[variables('vmScripts').commandToExecute]"
           }
         }
       }
