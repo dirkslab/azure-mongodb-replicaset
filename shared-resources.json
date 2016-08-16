@@ -5,6 +5,9 @@
     "storageSettings": {
       "type": "object"
     },
+    "machineSettings": {
+      "type": "object"
+    },
     "availabilitySetSettings": {
       "type": "object"
     },
@@ -21,7 +24,7 @@
       "location": "[resourceGroup().location]",
       "copy": {
         "name": "dbStoragePoolLoop",
-        "count": "[parameters('storageSettings').vmCount]"
+        "count": "[parameters('machineSettings').vmCount]"
       },
       "properties": {
         "accountType": "Standard_LRS"
@@ -34,7 +37,7 @@
       "location": "[resourceGroup().location]",
       "copy": {
         "name": "dbStoragePoolLoop",
-        "count": "[parameters('storageSettings').slaveCount]"
+        "count": "[parameters('machineSettings').slaveCount]"
       },
       "properties": {
         "accountType": "Standard_LRS"
