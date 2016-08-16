@@ -5,7 +5,6 @@
     "storageAccountNamePrefix": {
       "value": "[uniqueString(resourceGroup().id)]"
     },
-    {
       "storageAccountNamePrefixSlave": {
         "value": "[concat(uniqueString(resourceGroup().id),Slave)]"
       },
