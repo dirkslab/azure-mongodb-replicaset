@@ -3,11 +3,11 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "storageAccountNamePrefix": {
-      "value": "[uniqueString(resourceGroup().id)]"
+      "value": "[concat('master', uniqueString(resourceGroup().id))]"
     },
-      "storageAccountNamePrefixSlave": {
-        "value": "[concat(uniqueString(resourceGroup().id),'slave')]"
-      },
+    "storageAccountNamePrefixSlave": {
+      "value": "[concat('slave', uniqueString(resourceGroup().id))]"
+    },
       "adminUsername": {
         "value": "ppadmin"
       },
