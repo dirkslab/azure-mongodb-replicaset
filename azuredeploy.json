@@ -2,6 +2,12 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "storageAccountNamePrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Unique name of the new storage account that will be created to store virtual machine VHDs"
+      }
+    },
     "domainName": {
       "type": "string",
       "metadata": {
@@ -60,10 +66,8 @@
     }
   },
   "variables": {
-    "templateBaseUrl": "https://raw.githubusercontent.com/dirkslab/azure-mongodb-replicaset/skeleton2/",
+    "templateBaseUrl": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/spark-ubuntu-multidisks/",
     "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'shared-resources.json')]",
-    "storageAccountNamePrefix": "[concat('master', uniqueString(resourceGroup().id))]",
-    "storageAccountNamePrefixSlave": "[concat('slave', uniqueString(resourceGroup().id))]",
     "tshirtSizeSmall": {
       "vmSize": "Standard_A1",
       "diskSize": 1023,
@@ -71,7 +75,7 @@
       "vmCount": 2,
       "slaveCount": 1,
       "storage": {
-        "name": "[variables('storageAccountNamePrefix')]",
+        "name": "[parameters('storageAccountNamePrefix')]",
         "count": 1,
         "pool": "db",
         "map": [
@@ -84,20 +88,16 @@
     "tshirtSizeMedium": {
       "vmSize": "Standard_A3",
       "diskSize": 1023,
-      "vmTemplate": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources.json')]",
-      "vmTemplateSlave": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources-slave.json')]",
-      "vmCount": 3,
+      "vmTemplate": "[concat(variables('templateBaseUrl'), 'datastore-8disk-resources.json')]",
+      "vmCount": 2,
       "slaveCount": 1,
       "storage": {
-        "name": "[variables('storageAccountNamePrefix')]",
-        "nameSlave": "[variables('storageAccountNamePrefixSlave')]",
-        "count": 4,
+        "name": "[parameters('storageAccountNamePrefix')]",
+        "count": 2,
         "pool": "db",
         "map": [
           0,
-          1,
-          2,
-          3
+          1
         ],
         "jumpbox": 0
       }
@@ -109,7 +109,7 @@
       "vmCount": 3,
       "slaveCount": 2,
       "storage": {
-        "name": "[variables('storageAccountNamePrefix')]",
+        "name": "[parameters('storageAccountNamePrefix')]",
         "count": 2,
         "pool": "db",
         "map": [
@@ -127,7 +127,7 @@
       "vmCount": 4,
       "slaveCount": 3,
       "storage": {
-        "name": "[variables('storageAccountNamePrefix')]",
+        "name": "[parameters('storageAccountNamePrefix')]",
         "count": 2,
         "pool": "db",
         "map": [
@@ -149,9 +149,9 @@
         "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/shared_scripts/ubuntu/vm-disk-utils-0.1.sh"
       ],
       "imageReference": {
-        "publisher": "OpenLogic",
-        "offer": "Centos",
-        "sku": "7.2",
+        "publisher": "Canonical",
+        "offer": "UbuntuServer",
+        "sku": "14.04.2-LTS",
         "version": "latest"
       }
     },
@@ -189,9 +189,6 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
-          "machineSettings": {
-            "value": "[variables('tshirtSize')]"
-          },
           "storageSettings": {
             "value": "[variables('tshirtSize').storage]"
           },
@@ -243,7 +240,7 @@
             "value": {
               "vmSize": "[variables('tshirtSize').vmSize]",
               "diskSize": "[variables('tshirtSize').diskSize]",
-              "vmCount": "[variables('tshirtSize').vmCount]",
+              "vmCount": 1,
               "availabilitySet": "[variables('availabilitySetSettings').name]",
               "numberOfSlavesInstances": "[variables('tshirtSize').slaveCount]"
             }
@@ -267,7 +264,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[variables('tshirtSize').vmTemplateSlave]",
+          "uri": "[variables('tshirtSize').vmTemplate]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
@@ -326,7 +323,7 @@
         "parameters": {
           "storageSettings": {
             "value": {
-              "name": "[concat(variables('storageAccountNamePrefix'), variables('tshirtSize').storage.jumpbox)]"
+              "name": "[concat(parameters('storageAccountNamePrefix'), variables('tshirtSize').storage.jumpbox)]"
             }
           },
           "dnsName": {
