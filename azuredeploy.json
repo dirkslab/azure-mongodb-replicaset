@@ -74,6 +74,8 @@
   "variables": {
     "templateBaseUrl": "https://raw.githubusercontent.com/dirkslab/azure-mongodb-replicaset/skeleton2/",
     "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'shared-resources.json')]",
+    "storageAccountNamePrefix": "[concat('master', uniqueString(resourceGroup().id))]",
+    "storageAccountNamePrefixSlave": "[concat('slave', uniqueString(resourceGroup().id))]",
     "tshirtSizeSmall": {
       "vmSize": "Standard_A1",
       "diskSize": 1023,
@@ -99,8 +101,8 @@
       "vmCount": 3,
       "slaveCount": 1,
       "storage": {
-        "name": "[parameters('storageAccountNamePrefix')]",
-        "nameSlave": "[parameters('storageAccountNamePrefixSlave')]",
+        "name": "[variables('storageAccountNamePrefix')]",
+        "nameSlave": "[variables('storageAccountNamePrefixSlave')]",
         "count": 4,
         "pool": "db",
         "map": [
