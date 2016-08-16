@@ -72,7 +72,7 @@
     }
   },
   "variables": {
-    "templateBaseUrl": "https://raw.githubusercontent.com/dirkslab/azure-mongodb-replicaset/skeleton/",
+    "templateBaseUrl": "https://github.com/dirkslab/azure-mongodb-replicaset/tree/skeleton2/",
     "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'shared-resources.json')]",
     "tshirtSizeSmall": {
       "vmSize": "Standard_A1",
@@ -95,6 +95,7 @@
       "vmSize": "Standard_A3",
       "diskSize": 1023,
       "vmTemplate": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources .json')]",
+      "vmTemplateSlave": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources-slave .json')]",
       "vmCount": 3,
       "slaveCount": 1,
       "storage": {
@@ -273,7 +274,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[variables('tshirtSize').vmTemplate]",
+          "uri": "[variables('tshirtSize').vmTemplateSlave]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
