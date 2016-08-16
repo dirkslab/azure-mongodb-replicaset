@@ -2,18 +2,6 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "storageAccountNamePrefix": {
-      "type": "string",
-      "metadata": {
-        "description": "Unique name of the new storage account that will be created to store virtual machine VHDs"
-      }
-    },
-    "storageAccountNamePrefixSlave": {
-      "type": "string",
-      "metadata": {
-        "description": "Unique name of the new storage account that will be created to store Slave virtual machine VHDs"
-      }
-    },
     "domainName": {
       "type": "string",
       "metadata": {
