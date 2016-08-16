@@ -326,7 +326,7 @@
         "parameters": {
           "storageSettings": {
             "value": {
-              "name": "[concat(parameters('storageAccountNamePrefix'), variables('tshirtSize').storage.jumpbox)]"
+              "name": "[concat(variables('storageAccountNamePrefix'), variables('tshirtSize').storage.jumpbox)]"
             }
           },
           "dnsName": {
