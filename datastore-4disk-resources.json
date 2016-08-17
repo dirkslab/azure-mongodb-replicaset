@@ -29,6 +29,12 @@
     "masterIpAddress": {
       "type": "string"
     },
+    "lbSettings": {
+      "type": "object"
+    },
+    "networkSettings": {
+      "type": "object"
+    },
     "nodeType": {
       "type": "string"
     }
@@ -46,9 +52,32 @@
   "resources": [
     {
       "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/loadBalancers/inboundNatRules",
+      "name": "parameters('lbSettings').lbName, '/', 'SSH')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/loadBalancers/', parameters('lbSettings').lbName)]"
+      ],
+      "properties": {
+        "frontendIPConfiguration": {
+          "id": "[parameters('lbSettings').frontEndIPConfigID]"
+        },
+        "protocol": "tcp",
+        "frontendPort": 22,
+        "backendPort": 22,
+        "enableFloatingIP": false
+      }
+    },
+    {
+      "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[concat(variables('nicName'), copyindex())]",
       "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/virtualNetworks/', parameters('networkSettings').vnetName)]",
+        "[concat('Microsoft.Network/loadBalancers/', parameters('lbSettings').lbName)]",
+        "[concat('Microsoft.Network/loadBalancers/', parameters('lbSettings').lbName, '/inboundNatRules/', 'SSH')]"
+      ],
       "copy": {
         "name": "nicCopyLoop",
         "count": "[variables('vmCount')]"
@@ -61,7 +90,17 @@
               "privateIPAllocationMethod": "Dynamic",
               "subnet": {
                 "id": "[variables('subnetRef')]"
-              }
+              },
+              "loadBalancerBackendAddressPools": [
+                {
+                  "id": "[concat(parameters('lbSettings').lbID, '/backendAddressPools/LoadBalancerBackend')]"
+                }
+              ],
+              "loadBalancerInboundNatRules": [
+                {
+                  "id": "[concat(parameters('lbSettings').lbID,'/inboundNatRules/SSH')]"
+                }
+              ]
             }
           }
         ]

@@ -13,6 +13,9 @@
     },
     "networkSettings": {
       "type": "object"
+    },
+    "lbSettings": {
+      "type": "object"
     }
   },
   "variables": { },
@@ -41,6 +44,44 @@
       },
       "properties": {
         "accountType": "Standard_LRS"
+      }
+    },
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[parameters('lbSettings').publicIPAddressName]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "publicIPAllocationMethod": "[parameters('lbSettings').publicIPAddressName]",
+        "dnsSettings": {
+          "domainNameLabel": "[parameters('lbSettings').dnsNameforLBIP]"
+        }
+      }
+    },
+    {
+      "apiVersion": "2015-06-15",
+      "name": "[parameters('lbSettings').lbName]",
+      "type": "Microsoft.Network/loadBalancers",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/publicIPAddresses/', parameters('lbSettings').publicIPAddressName)]"
+      ],
+      "properties": {
+        "frontendIPConfigurations": [
+          {
+            "name": "LoadBalancerFrontend",
+            "properties": {
+              "publicIPAddress": {
+                "id": "[parameters('lbSettings').publicIPAddressID]"
+              }
+            }
+          }
+        ],
+        "backendAddressPools": [
+          {
+            "name": "LoadBalancerBackend"
+          }
+        ]
       }
     },
     {
