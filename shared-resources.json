@@ -5,6 +5,9 @@
     "storageSettings": {
       "type": "object"
     },
+    "machineSettings": {
+      "type": "object"
+    },
     "availabilitySetSettings": {
       "type": "object"
     },
@@ -17,18 +20,31 @@
     {
       "type": "Microsoft.Storage/storageAccounts",
       "name": "[concat(parameters('storageSettings').name, copyindex())]",
-      "apiVersion": "2015-05-01-preview",
+      "apiVersion": "2015-06-15",
       "location": "[resourceGroup().location]",
       "copy": {
         "name": "dbStoragePoolLoop",
-        "count": "[parameters('storageSettings').count]"
+        "count": "[parameters('machineSettings').vmCount]"
       },
       "properties": {
         "accountType": "Standard_LRS"
       }
     },
     {
-      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[concat(parameters('storageSettings').nameSlave, copyindex())]",
+      "apiVersion": "2015-06-15",
+      "location": "[resourceGroup().location]",
+      "copy": {
+        "name": "dbStoragePoolLoop",
+        "count": "[parameters('machineSettings').slaveCount]"
+      },
+      "properties": {
+        "accountType": "Standard_LRS"
+      }
+    },
+    {
+      "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[parameters('networkSettings').vnetName]",
       "location": "[resourceGroup().location]",
@@ -57,7 +73,7 @@
     {
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[parameters('availabilitySetSettings').name]",
-      "apiVersion": "2015-05-01-preview",
+      "apiVersion": "2015-06-15",
       "location": "[resourceGroup().location]",
       "properties": {
         "platformFaultDomainCount": "[parameters('availabilitySetSettings').fdCount]",

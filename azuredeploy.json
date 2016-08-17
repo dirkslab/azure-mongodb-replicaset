@@ -2,12 +2,6 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "storageAccountNamePrefix": {
-      "type": "string",
-      "metadata": {
-        "description": "Unique name of the new storage account that will be created to store virtual machine VHDs"
-      }
-    },
     "domainName": {
       "type": "string",
       "metadata": {
@@ -16,7 +10,7 @@
     },
     "adminUsername": {
       "type": "string",
-      "defaultValue": "azureuser",
+      "defaultValue": "ppadmin",
       "metadata": {
         "description": "Virtual machine administrator username"
       }
@@ -66,8 +60,10 @@
     }
   },
   "variables": {
-    "templateBaseUrl": "https://raw.githubusercontent.com/dirkslab/azure-mongodb-replicaset/skeleton/",
+    "templateBaseUrl": "https://raw.githubusercontent.com/dirkslab/azure-mongodb-replicaset/skeleton3/",
     "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'shared-resources.json')]",
+    "storageAccountNamePrefix": "[concat('master', uniqueString(resourceGroup().id))]",
+    "storageAccountNamePrefixSlave": "[concat('slave', uniqueString(resourceGroup().id))]",
     "tshirtSizeSmall": {
       "vmSize": "Standard_A1",
       "diskSize": 1023,
@@ -75,7 +71,7 @@
       "vmCount": 2,
       "slaveCount": 1,
       "storage": {
-        "name": "[parameters('storageAccountNamePrefix')]",
+        "name": "[variables('storageAccountNamePrefix')]",
         "count": 1,
         "pool": "db",
         "map": [
@@ -88,11 +84,13 @@
     "tshirtSizeMedium": {
       "vmSize": "Standard_A3",
       "diskSize": 1023,
-      "vmTemplate": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources .json')]",
+      "vmTemplate": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources.json')]",
+      "vmTemplateSlave": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources-slave.json')]",
       "vmCount": 3,
       "slaveCount": 1,
       "storage": {
-        "name": "[parameters('storageAccountNamePrefix')]",
+        "name": "[variables('storageAccountNamePrefix')]",
+        "nameSlave": "[variables('storageAccountNamePrefixSlave')]",
         "count": 4,
         "pool": "db",
         "map": [
@@ -111,7 +109,7 @@
       "vmCount": 3,
       "slaveCount": 2,
       "storage": {
-        "name": "[parameters('storageAccountNamePrefix')]",
+        "name": "[variables('storageAccountNamePrefix')]",
         "count": 2,
         "pool": "db",
         "map": [
@@ -129,7 +127,7 @@
       "vmCount": 4,
       "slaveCount": 3,
       "storage": {
-        "name": "[parameters('storageAccountNamePrefix')]",
+        "name": "[variables('storageAccountNamePrefix')]",
         "count": 2,
         "pool": "db",
         "map": [
@@ -146,16 +144,18 @@
     "jumpboxTemplateDisabled": "empty-resources.json",
     "jumpboxTemplateUrl": "[concat(variables('templateBaseUrl'), variables(concat('jumpboxTemplate',parameters('jumpbox'))))]",
     "osSettings": {
-      "scripts": [
-        "[concat(variables('templateBaseUrl'), 'spark-cluster-install.sh')]",
-        "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/shared_scripts/ubuntu/vm-disk-utils-0.1.sh"
-      ],
       "imageReference": {
         "publisher": "OpenLogic",
         "offer": "Centos",
         "sku": "7.2",
         "version": "latest"
       }
+    },
+    "vmScripts": {
+      "scriptsToDownload": [
+        "[concat(variables('templateBaseUrl'), 'mongodb-repl-setup.sh')]"
+      ],
+      "commandToExecute": "bash mongodb-repl-setup.sh"
     },
     "networkSettings": {
       "vnetName": "[parameters('virtualNetworkName')]",
@@ -191,6 +191,9 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
+          "machineSettings": {
+            "value": "[variables('tshirtSize')]"
+          },
           "storageSettings": {
             "value": "[variables('tshirtSize').storage]"
           },
@@ -252,6 +255,9 @@
           },
           "nodeType": {
             "value": "MASTER"
+          },
+          "vmScripts": {
+            "value": "[variables('vmScripts')]"
           }
         }
       }
@@ -266,7 +272,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[variables('tshirtSize').vmTemplate]",
+          "uri": "[variables('tshirtSize').vmTemplateSlave]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
@@ -325,7 +331,7 @@
         "parameters": {
           "storageSettings": {
             "value": {
-              "name": "[concat(parameters('storageAccountNamePrefix'), variables('tshirtSize').storage.jumpbox)]"
+              "name": "[concat(variables('storageAccountNamePrefix'), variables('tshirtSize').storage.jumpbox)]"
             }
           },
           "dnsName": {
