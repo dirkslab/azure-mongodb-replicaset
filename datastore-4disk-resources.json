@@ -53,8 +53,12 @@
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/loadBalancers/inboundNatRules",
-      "name": "parameters('lbSettings').lbName, '/', 'SSH')]",
+      "name": "parameters('lbSettings').lbName, '/', 'SSH', copyindex())]",
       "location": "[resourceGroup().location]",
+      "copy": {
+        "name": "lbNatLoop",
+        "count": "[variables('vmCount')]"
+      },
       "dependsOn": [
         "[concat('Microsoft.Network/loadBalancers/', parameters('lbSettings').lbName)]"
       ],
@@ -76,7 +80,7 @@
       "dependsOn": [
         "[concat('Microsoft.Network/virtualNetworks/', parameters('networkSettings').vnetName)]",
         "[concat('Microsoft.Network/loadBalancers/', parameters('lbSettings').lbName)]",
-        "[concat('Microsoft.Network/loadBalancers/', parameters('lbSettings').lbName, '/inboundNatRules/', 'SSH')]"
+        "[concat('Microsoft.Network/loadBalancers/', parameters('lbSettings').lbName, '/inboundNatRules/', 'SSH', copyindex())]"
       ],
       "copy": {
         "name": "nicCopyLoop",
@@ -98,7 +102,7 @@
               ],
               "loadBalancerInboundNatRules": [
                 {
-                  "id": "[concat(parameters('lbSettings').lbID,'/inboundNatRules/SSH')]"
+                  "id": "[concat(parameters('lbSettings').lbID,'/inboundNatRules/SSH', copyindex())]"
                 }
               ]
             }
