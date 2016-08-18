@@ -8,6 +8,9 @@
     "osSettings": {
       "type": "object"
     },
+    "vmScripts": {
+      "type": "object"
+    },
     "storageSettings": {
       "type": "object"
     },
@@ -26,6 +29,12 @@
     "masterIpAddress": {
       "type": "string"
     },
+    "lbSettings": {
+      "type": "object"
+    },
+    "networkSettings": {
+      "type": "object"
+    },
     "nodeType": {
       "type": "string"
     }
@@ -36,6 +45,7 @@
     "storageAccountName": "[concat(parameters('storageSettings').nameSlave, variables('namespace'))]",
     "vmName": "[concat(variables('namespace'), 'vm')]",
     "nicName": "[concat(variables('namespace'), 'nic')]",
+    "inboundNATRules": "[concat('Microsoft.Network/loadBalancers/', parameters('lbSettings').lbName, '/inboundNatRules/', 'SSH', 'Slave')]",
     "adminUsername": "[parameters('commonSettings').adminUsername]",
     "vmCount": "[parameters('machineSettings').vmCount]",
     "numberOfSlavesInstances": "[parameters('machineSettings').numberOfSlavesInstances]"
@@ -43,9 +53,31 @@
   "resources": [
     {
       "apiVersion": "2015-06-15",
-      "type": "Microsoft.Network/networkInterfaces",
-      "name": "[concat(variables('nicName'), copyindex())]",
+      "type": "Microsoft.Network/loadBalancers/inboundNatRules",
+      "name": "[concat(parameters('lbSettings').lbName, '/', 'SSH', 'Slave', copyindex())]",
       "location": "[resourceGroup().location]",
+      "copy": {
+        "name": "lbNatLoop",
+        "count": "[parameters('machineSettings').vmCount]"
+      },
+      "properties": {
+        "frontendIPConfiguration": {
+          "id": "[parameters('lbSettings').frontEndIPConfigID]"
+        },
+        "protocol": "tcp",
+        "frontendPort": "[copyIndex(60000)]",
+        "backendPort": 22,
+        "enableFloatingIP": false
+      }
+    },
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[concat(variables('nicName'), 'Slave', copyindex())]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat(variables('inboundNATRules'), copyindex())]"
+      ],
       "copy": {
         "name": "nicCopyLoop",
         "count": "[variables('vmCount')]"
@@ -58,7 +90,17 @@
               "privateIPAllocationMethod": "Dynamic",
               "subnet": {
                 "id": "[variables('subnetRef')]"
-              }
+              },
+              "loadBalancerBackendAddressPools": [
+                {
+                  "id": "[concat(parameters('lbSettings').lbID, '/backendAddressPools/LoadBalancerBackend')]"
+                }
+              ],
+              "loadBalancerInboundNatRules": [
+                {
+                  "id": "[concat(parameters('lbSettings').lbID,'/inboundNatRules/SSH/Slave/', copyindex())]"
+                }
+              ]
             }
           }
         ]
@@ -144,9 +186,32 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nicName'), copyindex()) )]"
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nicName'), 'Slave', copyindex()))]"
             }
           ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(variables('vmName'), copyindex(), '/setup-Mongo-repl-server')]",
+      "apiVersion": "2015-05-01-preview",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'), copyindex())]"
+      ],
+      "copy": {
+        "name": "scriptCopyLoop",
+        "count": "[variables('vmCount')]"
+      },
+      "properties": {
+        "publisher": "Microsoft.OSTCExtensions",
+        "type": "CustomScriptForLinux",
+        "typeHandlerVersion": "1.5",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+          "fileUris": "[parameters('vmScripts').scriptsToDownload]",
+          "commandToExecute": "[parameters('vmScripts').commandToExecute]"
         }
       }
     }
