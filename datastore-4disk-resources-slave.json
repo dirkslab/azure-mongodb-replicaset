@@ -45,7 +45,7 @@
     "storageAccountName": "[concat(parameters('storageSettings').nameSlave, variables('namespace'))]",
     "vmName": "[concat(variables('namespace'), 'vm')]",
     "nicName": "[concat(variables('namespace'), 'nic')]",
-    "inboundNATRules": "[concat('Microsoft.Network/loadBalancers/', parameters('lbSettings').lbName, '/inboundNatRules/', 'SSH', 'Slave')]",
+    "inboundNATRules": "[concat('Microsoft.Network/loadBalancers/', parameters('lbSettings').lbName, '/inboundNatRules/', 'SSH', variables('nicName'))]",
     "adminUsername": "[parameters('commonSettings').adminUsername]",
     "vmCount": "[parameters('machineSettings').vmCount]",
     "numberOfSlavesInstances": "[parameters('machineSettings').numberOfSlavesInstances]"
@@ -54,7 +54,7 @@
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/loadBalancers/inboundNatRules",
-      "name": "[concat(parameters('lbSettings').lbName, '/', 'SSH', 'Slave', copyindex())]",
+      "name": "[concat(parameters('lbSettings').lbName, '/', 'SSH', variables('nicName'), copyindex())]",
       "location": "[resourceGroup().location]",
       "copy": {
         "name": "lbNatLoop",
@@ -73,7 +73,7 @@
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[concat(variables('nicName'), 'Slave', copyindex())]",
+      "name": "[concat(variables('nicName'), copyindex())]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[concat(variables('inboundNATRules'), copyindex())]"
@@ -98,7 +98,7 @@
               ],
               "loadBalancerInboundNatRules": [
                 {
-                  "id": "[concat(parameters('lbSettings').lbID,'/inboundNatRules/SSH/Slave/', copyindex())]"
+                  "id": "[concat(parameters('lbSettings').lbID,'/inboundNatRules/SSH/', variables('nicName') , copyindex())]"
                 }
               ]
             }
@@ -186,7 +186,7 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nicName'), 'Slave', copyindex()))]"
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nicName'), copyindex()))]"
             }
           ]
         }
