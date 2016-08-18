@@ -363,11 +363,17 @@
               "frontEndIPConfigID": "[variables('frontEndIPConfigID')]"
             }
           },
+          "networkSettings": {
+            "value": "[variables('networkSettings')]"
+          },
           "masterIpAddress": {
             "value": "[reference('master-node').outputs.masterip.value]"
           },
           "nodeType": {
             "value": "SLAVE"
+          },
+          "vmScripts": {
+            "value": "[variables('vmScripts')]"
           }
         }
       }
