@@ -60,9 +60,6 @@
         "name": "lbNatLoop",
         "count": "[parameters('machineSettings').vmCount]"
       },
-      "dependsOn": [
-        "[concat('Microsoft.Network/loadBalancers/', parameters('lbSettings').lbName)]"
-      ],
       "properties": {
         "frontendIPConfiguration": {
           "id": "[parameters('lbSettings').frontEndIPConfigID]"
