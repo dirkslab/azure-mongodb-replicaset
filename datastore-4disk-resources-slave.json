@@ -54,7 +54,7 @@
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/loadBalancers/inboundNatRules",
-      "name": "[concat(parameters('lbSettings').lbName, '/', 'SSH', variables('nicName'), copyindex())]",
+      "name": "[concat(parameters('lbSettings').lbName, '/', 'SSH', '/',variables('nicName'), copyindex())]",
       "location": "[resourceGroup().location]",
       "copy": {
         "name": "lbNatLoop",
