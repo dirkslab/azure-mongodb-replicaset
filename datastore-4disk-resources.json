@@ -59,7 +59,7 @@
       "dependsOn": [
         "[concat('Microsoft.Network/virtualNetworks/', parameters('networkSettings').vnetName)]",
         "[concat('Microsoft.Network/loadBalancers/', parameters('lbSettings').lbName)]",
-        "variables('inboundNATrules'), copyindex())"
+        "[concat(variables('inboundNATRules'), copyindex())]"
       ],
       "copy": {
         "name": "nicCopyLoop",
