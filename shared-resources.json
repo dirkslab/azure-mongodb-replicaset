@@ -52,7 +52,7 @@
       "name": "[parameters('lbSettings').publicIPAddressName]",
       "location": "[resourceGroup().location]",
       "properties": {
-        "publicIPAllocationMethod": "[parameters('lbSettings').publicIPAddressName]",
+        "publicIPAllocationMethod": "Dynamic",
         "dnsSettings": {
           "domainNameLabel": "[parameters('lbSettings').dnsNameforLBIP]"
         }
