@@ -103,7 +103,7 @@
       }
     },
     "tshirtSizeMedium": {
-      "vmSize": "Standard_A3",
+      "vmSize": "Standard_D2_v2",
       "diskSize": 1023,
       "vmTemplate": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources.json')]",
       "vmTemplateSlave": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources-slave.json')]",
