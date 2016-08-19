@@ -175,7 +175,7 @@
     "vmScripts": {
       "scriptsToDownload": [
         "[concat(variables('templateBaseUrl'), 'mongodb-repl-setup.sh')]",
-        "[concat(variables('templateBaseUrl'), 'mongodb-repl-setup.sh')]"
+        "[concat(variables('templateBaseUrl'), 'mongobackupsetup.sh')]"
       ],
       "commandToExecute": "bash mongodb-repl-setup.sh",
       "commandToExecute2": "bash mongobackupsetup.sh"
