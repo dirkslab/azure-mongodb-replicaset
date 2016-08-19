@@ -178,7 +178,7 @@
         "[concat(variables('templateBaseUrl'), 'mongodb-repl-setup.sh')]"
       ],
       "commandToExecute": "bash mongodb-repl-setup.sh",
-      "commandToExecute2": "mongobackupsetup.sh"
+      "commandToExecute2": "bash mongobackupsetup.sh"
     },
     "networkSettings": {
       "vnetName": "[parameters('virtualNetworkName')]",
