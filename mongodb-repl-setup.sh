@@ -4,7 +4,7 @@
 # Install linux vm with attached data disks 
 # Script based on 4x Data disks 
 
-function step1()
+Install_step1()
 {
 # Enable swap file on the linux machine through azure agent file waagent.conf and disable selinux using the ex search replace editor
  
@@ -74,7 +74,7 @@ mdadm --create /dev/md127 --level 0 --raid-devices 4  /dev/sdc1 /dev/sdd1 /dev/s
 mkfs.xfs /dev/md127
 }
 
-function step2()
+Install_step2()
 {
 # Create a directory which you want to mount to the new disk. mkdir /data_disk
 mkdir /data_disk
@@ -101,7 +101,7 @@ mount -a
 mount
 }
 
-function step2()
+Install_step3()
 {
 # Install Mongo
 
@@ -212,7 +212,7 @@ chmod 755 mongologrotation.sh
 # ref http://www.thegeekstuff.com/2009/06/15-practical-crontab-examples/
 }
 
-function step4()
+Install_step4()
 {
 # Disable THP is per mongo best practice
 # Create a new custom tuned profile by copying the default tuned profile (virtual-guest in this case)
@@ -337,7 +337,7 @@ cat /etc/security/limits.d/99-mongodb-nproc.conf
 sed -i:bak '$ a\net.ipv4.tcp_keepalive_time = 120' /etc/yum.conf /etc/sysctl.conf
 }
 
-step1
-step2
-step3
-step4
+Install_step1
+Install_step2
+Install_step3
+Install_step4
