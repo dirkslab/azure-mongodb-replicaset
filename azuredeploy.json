@@ -81,7 +81,7 @@
     }
   },
   "variables": {
-    "templateBaseUrl": "https://raw.githubusercontent.com/dirkslab/azure-mongodb-replicaset/skeleton4/",
+    "templateBaseUrl": "https://raw.githubusercontent.com/dirkslab/azure-mongodb-replicaset/skeleton5/",
     "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'shared-resources.json')]",
     "storageAccountNamePrefix": "[concat('master', uniqueString(resourceGroup().id))]",
     "storageAccountNamePrefixSlave": "[concat('slave', uniqueString(resourceGroup().id))]",
@@ -107,7 +107,7 @@
       "diskSize": 1023,
       "vmTemplate": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources.json')]",
       "vmTemplateSlave": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources-slave.json')]",
-      "vmCount": 3,
+      "vmCount": 2,
       "slaveCount": 1,
       "storage": {
         "name": "[variables('storageAccountNamePrefix')]",
@@ -174,9 +174,11 @@
     },
     "vmScripts": {
       "scriptsToDownload": [
+        "[concat(variables('templateBaseUrl'), 'mongodb-repl-setup.sh')]",
         "[concat(variables('templateBaseUrl'), 'mongodb-repl-setup.sh')]"
       ],
-      "commandToExecute": "bash mongodb-repl-setup.sh"
+      "commandToExecute": "bash mongodb-repl-setup.sh",
+      "commandToExecute2": "mongobackupsetup.sh"
     },
     "networkSettings": {
       "vnetName": "[parameters('virtualNetworkName')]",
