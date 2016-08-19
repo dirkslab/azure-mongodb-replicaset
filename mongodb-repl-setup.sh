@@ -338,7 +338,7 @@ sed -i:bak '$ a\net.ipv4.tcp_keepalive_time = 120' /etc/yum.conf /etc/sysctl.con
 }
 
 Install_step1
-wait $i
+wait $!
 Install_step2
 Install_step3
 Install_step4
