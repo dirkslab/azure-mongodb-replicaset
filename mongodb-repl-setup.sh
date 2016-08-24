@@ -81,10 +81,10 @@ UUID=`lsblk -no UUID /dev/md127`
 if [ -n "$UUID" ];
 then
 # Create a directory which you want to mount to the new disk. mkdir /data_disk
-mkdir /data_disk2
+mkdir /data_disk
 # Change Permissions
-chmod 755 /data_disk2
-sed -i:bak "/UUID/a\UUID=$UUID  /data_disk2  xfs  defaults,noatime  0  2" /etc/fstab
+chmod 755 /data_disk
+sed -i:bak "/UUID/a\UUID=$UUID  /data_disk  xfs  defaults,noatime  0  2" /etc/fstab
 mount -a
 else
 echo "fail"
@@ -330,7 +330,6 @@ sed -i:bak '$ a\net.ipv4.tcp_keepalive_time = 120' /etc/yum.conf /etc/sysctl.con
 Install_step1
 wait
 Install_step2
-until !!; do Install_step2 :; done
 wait
 Install_step3
 wait
