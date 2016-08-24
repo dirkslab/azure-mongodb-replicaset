@@ -76,29 +76,20 @@ mkfs.xfs /dev/md127
 
 Install_step2()
 {
+UUID=`lsblk -no UUID /dev/md127`
+
+if [ "echo $UUID" > /dev/null ];
+then
 # Create a directory which you want to mount to the new disk. mkdir /data_disk
 mkdir /data_disk
-
 # Change Permissions
-
 chmod 755 /data_disk
-
-# Grab UUID from /dev/md127 as variable 
-
-UUID=`lsblk -no UUID /dev/md127`
-echo "$UUID"
-l
-#mount drive in fstab using $UUID
-
 sed -i:bak "/UUID/a\UUID=$UUID  /data_disk  xfs  defaults,noatime  0  2" /etc/fstab
-
-# mount the drive immediately 
-
 mount -a
-
-# Status check on mount
-
-mount
+else
+sleep 30s
+Install_mount
+fi
 }
 
 Install_step3()
@@ -338,7 +329,6 @@ sed -i:bak '$ a\net.ipv4.tcp_keepalive_time = 120' /etc/yum.conf /etc/sysctl.con
 }
 
 Install_step1
-wait $!
 Install_step2
 Install_step3
 Install_step4
