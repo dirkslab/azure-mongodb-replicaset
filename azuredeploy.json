@@ -107,7 +107,7 @@
       "diskSize": 1023,
       "vmTemplate": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources.json')]",
       "vmTemplateSlave": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources-slave.json')]",
-      "vmCount": 2,
+      "vmCount": 1,
       "slaveCount": 1,
       "storage": {
         "name": "[variables('storageAccountNamePrefix')]",
