@@ -29,7 +29,11 @@ mkfs.xfs /dev/md127
 
 Install_step2()
 {
-until [ -n "$UUID" ]; do sleep 30s; done
+UUID=`lsblk -no UUID /dev/md127`
+until [ -n "$UUID" ]; do 
+sleep 30s
+UUID=`lsblk -no UUID /dev/md127`; 
+done
 sed -i:bak "/UUID/a\UUID=$UUID  /data_disk2  xfs  defaults,noatime  0  2" /etc/fstab
 mount -a
 }
