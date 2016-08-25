@@ -1,13 +1,14 @@
 ﻿#!/bin/bash
 
 # Pre-requisites
-# Install linux vm with attached data disks 
-# Script based on 4x Data disks 
+# Install linux vm with attached data disks
+# Script based on 4x Data disks
+
 
 Install_step1()
 {
 # Enable swap file on the linux machine through azure agent file waagent.conf and disable selinux using the ex search replace editor
- 
+
 ex -s +%s/ResourceDisk.EnableSwap=n/ResourceDisk.EnableSwap=y/g +%p +x /etc/waagent.conf
 ex -s +%s/ResourceDisk.SwapSizeMB=0/ResourceDisk.SwapSizeMB=5120/g +%p +x /etc/waagent.conf
 
@@ -16,20 +17,6 @@ ex -s +%s/SELINUX=enforcing/SELINUX=disabled/g +%p +x /etc/selinux/config
 # install mdam
 
 yum -y install mdadm
-
-# configure partition on each disk, config blow is based on 4 attached data disks
-
-hdd="/dev/sdc /dev/sdd /dev/sde /dev/sdf"
-for i in $hdd;do
-echo "n
-p
-1
-
-
-t
-fd
-w
-"|fdisk
 
 # Create the raid device using 4 data disks- DataRaid
 
@@ -289,10 +276,22 @@ cat /etc/security/limits.d/99-mongodb-nproc.conf
 sed -i:bak '$ a\net.ipv4.tcp_keepalive_time = 120' /etc/yum.conf /etc/sysctl.conf
 }
 
+# configure partition on each disk, config blow is based on 4 attached data disks
+
+hdd="/dev/sdc /dev/sdd /dev/sde /dev/sdf"
+for i in $hdd;do
+echo "n
+p
+1
+
+
+t
+fd
+w
+"|fdisk $i;done
+
 Install_step1
 Install_step2
 #until !!; do Install_step2 :; done
 Install_step3
 Install_step4
-
-echo "done"
