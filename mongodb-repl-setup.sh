@@ -34,7 +34,7 @@ until [ -n "$UUID" ]; do
 sleep 30s
 UUID=`lsblk -no UUID /dev/md127`; 
 done
-sed -i:bak "/UUID/a\UUID=$UUID  /data_disk2  xfs  defaults,noatime  0  2" /etc/fstab
+sed -i:bak "/UUID/a\UUID=$UUID  /data_disk  xfs  defaults,noatime  0  2" /etc/fstab
 mount -a
 }
 
@@ -289,9 +289,9 @@ w
 "|fdisk $i;done
 
 # Create a directory which you want to mount to the new disk. mkdir /data_disk
-mkdir /data_disk2
+mkdir /data_disk
 # Change Permissions
-chmod 755 /data_disk2
+chmod 755 /data_disk
 
 Install_step1
 Install_step2
