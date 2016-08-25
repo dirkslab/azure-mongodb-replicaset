@@ -69,26 +69,22 @@ EOF
 
 mdadm --create /dev/md127 --level 0 --raid-devices 4  /dev/sdc1 /dev/sdd1 /dev/sde1 /dev/sdf1
 
-# Create the file system on the new RAID device
-
-mkfs.xfs /dev/md127
 }
 
 Install_step2()
 {
-UUID=`lsblk -no UUID /dev/md127`
+# Create the file system on the new RAID device
 
-if [ -n "$UUID" ];
-then
+mkfs.xfs /dev/md127
+wait %-
 # Create a directory which you want to mount to the new disk. mkdir /data_disk
 mkdir /data_disk
 # Change Permissions
 chmod 755 /data_disk
+
+UUID=`lsblk -no UUID /dev/md127`
 sed -i:bak "/UUID/a\UUID=$UUID  /data_disk  xfs  defaults,noatime  0  2" /etc/fstab
 mount -a
-else
-echo "fail"
-fi
 }
 
 Install_step3()
@@ -328,9 +324,7 @@ sed -i:bak '$ a\net.ipv4.tcp_keepalive_time = 120' /etc/yum.conf /etc/sysctl.con
 }
 
 Install_step1
-#Install_step2
-until !!; do Install_step2 :; done
-wait
+Install_step2
+#until !!; do Install_step2 :; done
 Install_step3
-wait
 Install_step4
