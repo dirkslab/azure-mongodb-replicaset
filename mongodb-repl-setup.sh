@@ -19,19 +19,9 @@ yum -y install mdadm
 
 # configure partition on each disk, config blow is based on 4 attached data disks
 
-fdisk /dev/sdc <<EOF
-n
-p
-1
-
-
-t
-fd
-W
-EOF
-
-fdisk /dev/sdd <<EOF
-n
+hdd="/dev/sdc /dev/sdd /dev/sde /dev/sdf"
+for i in $hdd;do
+echo "n
 p
 1
 
@@ -39,44 +29,20 @@ p
 t
 fd
 w
-EOF
-
-fdisk /dev/sde <<EOF
-n
-p
-1
-
-
-t
-fd
-w
-EOF
-
-
-fdisk /dev/sdf <<EOF
-n
-p
-1
-
-
-t
-fd
-w
-
-EOF
+"|fdisk
 
 # Create the raid device using 4 data disks- DataRaid
 
 mdadm --create /dev/md127 --level 0 --raid-devices 4  /dev/sdc1 /dev/sdd1 /dev/sde1 /dev/sdf1
 
+# Create the file system on the new RAID device
+
+mkfs.xfs /dev/md127
 }
 
 Install_step2()
 {
-# Create the file system on the new RAID device
 
-mkfs.xfs /dev/md127
-wait %-
 # Create a directory which you want to mount to the new disk. mkdir /data_disk
 mkdir /data_disk
 # Change Permissions
@@ -328,3 +294,5 @@ Install_step2
 #until !!; do Install_step2 :; done
 Install_step3
 Install_step4
+
+echo "done"
