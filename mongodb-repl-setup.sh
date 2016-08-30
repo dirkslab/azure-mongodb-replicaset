@@ -13,7 +13,32 @@ ex -s +%s/ResourceDisk.EnableSwap=n/ResourceDisk.EnableSwap=y/g +%p +x /etc/waag
 ex -s +%s/ResourceDisk.SwapSizeMB=0/ResourceDisk.SwapSizeMB=5120/g +%p +x /etc/waagent.conf
 
 ex -s +%s/SELINUX=enforcing/SELINUX=disabled/g +%p +x /etc/selinux/config
+}
 
+Install_step2()
+{
+# configure partition on each disk, config blow is based on 4 attached data disks
+
+hdd="/dev/sdc /dev/sdd /dev/sde /dev/sdf"
+for i in $hdd;do
+echo "n
+p
+1
+
+
+t
+fd
+w
+"|fdisk $i;done
+
+# Create a directory which you want to mount to the new disk. mkdir /data_disk
+mkdir /data_disk
+# Change Permissions
+chmod 755 /data_disk
+}
+
+Install_step3()
+{
 # install mdam
 
 yum -y install mdadm
@@ -27,7 +52,7 @@ mdadm --create /dev/md127 --level 0 --raid-devices 4  /dev/sdc1 /dev/sdd1 /dev/s
 mkfs.xfs /dev/md127
 }
 
-Install_step2()
+Install_step4()
 {
 UUID=`lsblk -no UUID /dev/md127`
 until [ -n "$UUID" ]; do 
@@ -38,7 +63,7 @@ sed -i:bak "/UUID/a\UUID=$UUID  /data_disk  xfs  defaults,noatime  0  2" /etc/fs
 mount -a
 }
 
-Install_step3()
+Install_step5()
 {
 # Install Mongo
 
@@ -149,7 +174,7 @@ chmod 755 mongologrotation.sh
 # ref http://www.thegeekstuff.com/2009/06/15-practical-crontab-examples/
 }
 
-Install_step4()
+Install_step6()
 {
 # Disable THP is per mongo best practice
 # Create a new custom tuned profile by copying the default tuned profile (virtual-guest in this case)
@@ -274,27 +299,11 @@ cat /etc/security/limits.d/99-mongodb-nproc.conf
 sed -i:bak '$ a\net.ipv4.tcp_keepalive_time = 120' /etc/yum.conf /etc/sysctl.conf
 }
 
-# configure partition on each disk, config blow is based on 4 attached data disks
 
-hdd="/dev/sdc /dev/sdd /dev/sde /dev/sdf"
-for i in $hdd;do
-echo "n
-p
-1
-
-
-t
-fd
-w
-"|fdisk $i;done
-
-# Create a directory which you want to mount to the new disk. mkdir /data_disk
-mkdir /data_disk
-# Change Permissions
-chmod 755 /data_disk
 
 Install_step1
 Install_step2
-#until !!; do Install_step2 :; done
 Install_step3
 Install_step4
+Install_step5
+Install_step6
