@@ -232,7 +232,7 @@ sudo tuned-adm active
 
 # Make a directory for your systemd scripts
 
-sudo mkdir /etc/systemd/system/scripts
+mkdir /etc/systemd/system/scripts
 
 # create your script file /etc/systemd/system/scripts/defrag.sh and echo your settings
 
