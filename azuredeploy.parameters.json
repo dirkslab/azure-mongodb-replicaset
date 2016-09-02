@@ -2,23 +2,11 @@
   "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "adminUsername": {
-      "value": "ppadmin"
-    },
-    "domainName": {
-      "value": "cgnsparkv12"
-    },
     "dnsNameforLBIP": {
       "value": "prpmongorpl2"
     },
     "lbName": {
       "value": "prpmongorplLB2"
-    },
-    "sparkversion": {
-      "value": "1.2.1"
-    },
-    "jumpbox": {
-      "value": "Disabled"
     },
     "tshirtSize": {
       "value": "Medium"
