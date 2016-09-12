@@ -35,12 +35,12 @@
     },
     {
       "type": "Microsoft.Storage/storageAccounts",
-      "name": "[concat(parameters('storageSettings').nameSlave, copyindex())]",
+      "name": "[concat(parameters('storageSettings').nameOmega, copyindex())]",
       "apiVersion": "2015-06-15",
       "location": "[resourceGroup().location]",
       "copy": {
         "name": "dbStoragePoolLoop",
-        "count": "[parameters('machineSettings').slaveCount]"
+        "count": "[parameters('machineSettings').omegaCount]"
       },
       "properties": {
         "accountType": "Standard_LRS"

@@ -6,22 +6,25 @@
       "value": "ppadmin"
     },
     "domainName": {
-      "value": "cgnsparkv1"
+      "value": "cgnsparkv12"
     },
     "dnsNameforLBIP": {
-      "value": "prpmongorpl"
+      "value": "prpmongorpl2"
     },
     "lbName": {
-      "value": "prpmongorplLB"
-    },
-    "sparkversion": {
-      "value": "1.2.1"
-    },
-    "jumpbox": {
-      "value": "Disabled"
+      "value": "prpmongorplLB2"
     },
     "tshirtSize": {
       "value": "Medium"
+    },
+    "virtualNetworkName": {
+      "value": "vnet2"
+    },
+    "publicIPAddressName": {
+      "value": "myPublicIP2"
+    },
+    "AvailabilitySetName": {
+      "value": "MyABSet"
     }
   }
-  }
+}

@@ -8,6 +8,9 @@
     "osSettings": {
       "type": "object"
     },
+    "vmScripts": {
+      "type": "object"
+    },
     "storageSettings": {
       "type": "object"
     },
@@ -26,6 +29,12 @@
     "alphaIpAddress": {
       "type": "string"
     },
+    "lbSettings": {
+      "type": "object"
+    },
+    "networkSettings": {
+      "type": "object"
+    },
     "nodeType": {
       "type": "string"
     }
@@ -34,18 +43,41 @@
     "namespace": "[parameters('commonSettings').namespace]",
     "subnetRef": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('subnet').vnet), '/subnets/', parameters('subnet').name)]",
     "storageAccountName": "[concat(parameters('storageSettings').name, variables('namespace'))]",
-    "vmName": "[concat(variables('namespace'), 'vm')]",
+    "vmName": "[variables('namespace')]",
     "nicName": "[concat(variables('namespace'), 'nic')]",
+    "inboundNATRules": "[concat('Microsoft.Network/loadBalancers/', parameters('lbSettings').lbName, '/inboundNatRules/', 'SSH')]",
     "adminUsername": "[parameters('commonSettings').adminUsername]",
     "vmCount": "[parameters('machineSettings').vmCount]",
     "numberOfOmegaInstances": "[parameters('machineSettings').numberOfOmegaInstances]"
   },
   "resources": [
     {
-      "apiVersion": "2015-05-01-preview",
-      "type": "Microsoft.Network/networkInterfaces",
-      "name": "[concat(variables('nicName'), copyindex())]",
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/loadBalancers/inboundNatRules",
+      "name": "[concat(parameters('lbSettings').lbName, '/', 'SSH', copyindex(1))]",
       "location": "[resourceGroup().location]",
+      "copy": {
+        "name": "lbNatLoop",
+        "count": "[parameters('machineSettings').vmCount]"
+      },
+      "properties": {
+        "frontendIPConfiguration": {
+          "id": "[parameters('lbSettings').frontEndIPConfigID]"
+        },
+        "protocol": "tcp",
+        "frontendPort": "[copyIndex(5000)]",
+        "backendPort": 22,
+        "enableFloatingIP": false
+      }
+    },
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[concat(variables('nicName'), copyindex(1))]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat(variables('inboundNATRules'), copyindex(1))]"
+      ],
       "copy": {
         "name": "nicCopyLoop",
         "count": "[variables('vmCount')]"
@@ -58,19 +90,29 @@
               "privateIPAllocationMethod": "Dynamic",
               "subnet": {
                 "id": "[variables('subnetRef')]"
-              }
+              },
+              "loadBalancerBackendAddressPools": [
+                {
+                  "id": "[concat(parameters('lbSettings').lbID, '/backendAddressPools/LoadBalancerBackend')]"
+                }
+              ],
+              "loadBalancerInboundNatRules": [
+                {
+                  "id": "[concat(parameters('lbSettings').lbID,'/inboundNatRules/SSH', copyindex(1))]"
+                }
+              ]
             }
           }
         ]
       }
     },
     {
-      "apiVersion": "2015-05-01-preview",
+      "apiVersion": "2015-06-15",
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[concat(variables('vmName'), copyindex())]",
+      "name": "[concat(variables('vmName'), copyindex(1))]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), copyindex())]"
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), copyindex(1))]"
       ],
       "copy": {
         "name": "vmCopyLoop",
@@ -84,7 +126,7 @@
           "vmSize": "[parameters('machineSettings').vmSize]"
         },
         "osProfile": {
-          "computername": "[concat(variables('vmName'), copyindex())]",
+          "computername": "[concat(variables('vmName'), copyindex(1))]",
           "adminUsername": "[variables('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
@@ -93,7 +135,7 @@
           "osDisk": {
             "name": "osdisk",
             "vhd": {
-              "uri": "[concat('http://',parameters('storageSettings').name, parameters('storageSettings').map[copyindex()],'.blob.core.windows.net/vhds/', variables('vmName'), copyindex(), '-osdisk.vhd')]"
+              "uri": "[concat('http://',parameters('storageSettings').name, parameters('storageSettings').map[copyindex(1)],'.blob.core.windows.net/vhds/', variables('vmName'), copyindex(1), '-osdisk.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
@@ -104,7 +146,7 @@
               "diskSizeGB": "[parameters('machineSettings').diskSize]",
               "lun": 0,
               "vhd": {
-                "Uri": "[concat('http://', parameters('storageSettings').name, parameters('storageSettings').map[copyindex()],'.blob.core.windows.net/vhds/',variables('vmName'), copyindex(),'-datadisk1.vhd')]"
+                "Uri": "[concat('http://', parameters('storageSettings').name, parameters('storageSettings').map[copyindex(1)],'.blob.core.windows.net/vhds/',variables('vmName'), copyindex(1),'-datadisk1.vhd')]"
               },
               "caching": "None",
               "createOption": "Empty"
@@ -114,7 +156,7 @@
               "diskSizeGB": "[parameters('machineSettings').diskSize]",
               "lun": 1,
               "vhd": {
-                "Uri": "[concat('http://', parameters('storageSettings').name, parameters('storageSettings').map[copyindex()],'.blob.core.windows.net/vhds/',variables('vmName'), copyindex(),'-datadisk2.vhd')]"
+                "Uri": "[concat('http://', parameters('storageSettings').name, parameters('storageSettings').map[copyindex(1)],'.blob.core.windows.net/vhds/',variables('vmName'), copyindex(1),'-datadisk2.vhd')]"
               },
               "caching": "None",
               "createOption": "Empty"
@@ -124,7 +166,7 @@
               "diskSizeGB": "[parameters('machineSettings').diskSize]",
               "lun": 2,
               "vhd": {
-                "Uri": "[concat('http://', parameters('storageSettings').name, parameters('storageSettings').map[copyindex()],'.blob.core.windows.net/vhds/',variables('vmName'), copyindex(),'-datadisk3.vhd')]"
+                "Uri": "[concat('http://', parameters('storageSettings').name, parameters('storageSettings').map[copyindex(1)],'.blob.core.windows.net/vhds/',variables('vmName'), copyindex(1),'-datadisk3.vhd')]"
               },
               "caching": "None",
               "createOption": "Empty"
@@ -134,47 +176,7 @@
               "diskSizeGB": "[parameters('machineSettings').diskSize]",
               "lun": 3,
               "vhd": {
-                "Uri": "[concat('http://', parameters('storageSettings').name, parameters('storageSettings').map[copyindex()],'.blob.core.windows.net/vhds/',variables('vmName'), copyindex(),'-datadisk4.vhd')]"
-              },
-              "caching": "None",
-              "createOption": "Empty"
-            },
-            {
-              "name": "datadisk5",
-              "diskSizeGB": "[parameters('machineSettings').diskSize]",
-              "lun": 4,
-              "vhd": {
-                "Uri": "[concat('http://', parameters('storageSettings').name, parameters('storageSettings').map[copyindex()],'.blob.core.windows.net/vhds/',variables('vmName'), copyindex(),'-datadisk5.vhd')]"
-              },
-              "caching": "None",
-              "createOption": "Empty"
-            },
-            {
-              "name": "datadisk6",
-              "diskSizeGB": "[parameters('machineSettings').diskSize]",
-              "lun": 5,
-              "vhd": {
-                "Uri": "[concat('http://', parameters('storageSettings').name, parameters('storageSettings').map[copyindex()],'.blob.core.windows.net/vhds/',variables('vmName'), copyindex(),'-datadisk6.vhd')]"
-              },
-              "caching": "None",
-              "createOption": "Empty"
-            },
-            {
-              "name": "datadisk7",
-              "diskSizeGB": "[parameters('machineSettings').diskSize]",
-              "lun": 6,
-              "vhd": {
-                "Uri": "[concat('http://', parameters('storageSettings').name, parameters('storageSettings').map[copyindex()],'.blob.core.windows.net/vhds/',variables('vmName'), copyindex(),'-datadisk7.vhd')]"
-              },
-              "caching": "None",
-              "createOption": "Empty"
-            },
-            {
-              "name": "datadisk8",
-              "diskSizeGB": "[parameters('machineSettings').diskSize]",
-              "lun": 7,
-              "vhd": {
-                "Uri": "[concat('http://', parameters('storageSettings').name, parameters('storageSettings').map[copyindex()],'.blob.core.windows.net/vhds/',variables('vmName'), copyindex(),'-datadisk8.vhd')]"
+                "Uri": "[concat('http://', parameters('storageSettings').name, parameters('storageSettings').map[copyindex(1)],'.blob.core.windows.net/vhds/',variables('vmName'), copyindex(1),'-datadisk4.vhd')]"
               },
               "caching": "None",
               "createOption": "Empty"
@@ -184,7 +186,7 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nicName'), copyindex()) )]"
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nicName'), copyindex(1)) )]"
             }
           ]
         }
@@ -192,11 +194,11 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(variables('vmName'), copyindex(), '/install_spark')]",
+      "name": "[concat(variables('vmName'), copyindex(1), '/setup-Mongo-repl-server')]",
       "apiVersion": "2015-05-01-preview",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'), copyindex())]"
+        "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'), copyindex(1))]"
       ],
       "copy": {
         "name": "scriptCopyLoop",
@@ -208,8 +210,8 @@
         "typeHandlerVersion": "1.5",
         "autoUpgradeMinorVersion": true,
         "settings": {
-          "fileUris": "[parameters('osSettings').scripts]",
-          "commandToExecute": "[concat('bash spark-cluster-install.sh -k ',parameters('sparkversion'),' -d ', parameters('alphaIpAddress'),' -s ',variables('numberOfOmegaInstances'),' -m ', parameters('nodeType'))]"
+          "fileUris": "[parameters('vmScripts').scriptsToDownload]",
+          "commandToExecute": "[parameters('vmScripts').commandToExecute]"
         }
       }
     }

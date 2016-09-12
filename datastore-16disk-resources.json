@@ -23,7 +23,7 @@
     "sparkversion": {
       "type": "string"
     },
-    "masterIpAddress": {
+    "alphaIpAddress": {
       "type": "string"
     },
     "nodeType": {
@@ -38,7 +38,7 @@
     "nicName": "[concat(variables('namespace'), 'nic')]",
     "adminUsername": "[parameters('commonSettings').adminUsername]",
     "vmCount": "[parameters('machineSettings').vmCount]",
-    "numberOfSlavesInstances": "[parameters('machineSettings').numberOfSlavesInstances]"
+    "numberOfOmegaInstances": "[parameters('machineSettings').numberOfOmegaInstances]"
   },
   "resources": [
     {
@@ -289,13 +289,13 @@
         "autoUpgradeMinorVersion": true,
         "settings": {
           "fileUris": "[parameters('osSettings').scripts]",
-          "commandToExecute": "[concat('bash spark-cluster-install.sh -k ',parameters('sparkversion'),' -d ', parameters('masterIpAddress'),' -s ',variables('numberOfSlavesInstances'),' -m ', parameters('nodeType'))]"
+          "commandToExecute": "[concat('bash spark-cluster-install.sh -k ',parameters('sparkversion'),' -d ', parameters('alphaIpAddress'),' -s ',variables('numberOfOmegaInstances'),' -m ', parameters('nodeType'))]"
         }
       }
     }
   ],
   "outputs": {
-    "masterip": {
+    "alphaip": {
       "value": "[reference(concat(variables('nicName'),0)).ipConfigurations[0].properties.privateIPAddress]",
       "type": "string"
     }
