@@ -129,7 +129,7 @@
           "osDisk": {
             "name": "osdisk",
             "vhd": {
-              "uri": "[concat('http://',parameters('storageSettings').name, parameters('storageSettings').map[copyindex(1)],'.blob.core.windows.net/vhds/', variables('vmName'), copyindex(1), '-osdisk.vhd')]"
+              "uri": "[concat('http://',parameters('storageSettings').nameAlpha, parameters('storageSettings').map[copyindex(1)],'.blob.core.windows.net/vhds/', variables('vmName'), copyindex(1), '-osdisk.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
@@ -140,7 +140,7 @@
               "diskSizeGB": "[parameters('machineSettings').diskSize]",
               "lun": 0,
               "vhd": {
-                "Uri": "[concat('http://', parameters('storageSettings').name, parameters('storageSettings').map[copyindex(1)],'.blob.core.windows.net/vhds/',variables('vmName'), copyindex(1),'-datadisk1.vhd')]"
+                "Uri": "[concat('http://', parameters('storageSettings').nameAlpha, parameters('storageSettings').map[copyindex(1)],'.blob.core.windows.net/vhds/',variables('vmName'), copyindex(1),'-datadisk1.vhd')]"
               },
               "caching": "None",
               "createOption": "Empty"
@@ -150,7 +150,7 @@
               "diskSizeGB": "[parameters('machineSettings').diskSize]",
               "lun": 1,
               "vhd": {
-                "Uri": "[concat('http://', parameters('storageSettings').name, parameters('storageSettings').map[copyindex(1)],'.blob.core.windows.net/vhds/',variables('vmName'), copyindex(1),'-datadisk2.vhd')]"
+                "Uri": "[concat('http://', parameters('storageSettings').nameAlpha, parameters('storageSettings').map[copyindex(1)],'.blob.core.windows.net/vhds/',variables('vmName'), copyindex(1),'-datadisk2.vhd')]"
               },
               "caching": "None",
               "createOption": "Empty"
@@ -160,7 +160,7 @@
               "diskSizeGB": "[parameters('machineSettings').diskSize]",
               "lun": 2,
               "vhd": {
-                "Uri": "[concat('http://', parameters('storageSettings').name, parameters('storageSettings').map[copyindex(1)],'.blob.core.windows.net/vhds/',variables('vmName'), copyindex(1),'-datadisk3.vhd')]"
+                "Uri": "[concat('http://', parameters('storageSettings').nameAlpha, parameters('storageSettings').map[copyindex(1)],'.blob.core.windows.net/vhds/',variables('vmName'), copyindex(1),'-datadisk3.vhd')]"
               },
               "caching": "None",
               "createOption": "Empty"
@@ -170,7 +170,7 @@
               "diskSizeGB": "[parameters('machineSettings').diskSize]",
               "lun": 3,
               "vhd": {
-                "Uri": "[concat('http://', parameters('storageSettings').name, parameters('storageSettings').map[copyindex(1)],'.blob.core.windows.net/vhds/',variables('vmName'), copyindex(1),'-datadisk4.vhd')]"
+                "Uri": "[concat('http://', parameters('storageSettings').nameAlpha, parameters('storageSettings').map[copyindex(1)],'.blob.core.windows.net/vhds/',variables('vmName'), copyindex(1),'-datadisk4.vhd')]"
               },
               "caching": "None",
               "createOption": "Empty"

@@ -119,7 +119,7 @@
       "vmCount": 3,
       "omegaCount": 1,
       "storage": {
-        "name": "[variables('storageAccountNamePrefixAlpha')]",
+        "nameAlpha": "[variables('storageAccountNamePrefixAlpha')]",
         "nameOmega": "[variables('storageAccountNamePrefixOmega')]",
         "count": 4,
         "pool": "db",

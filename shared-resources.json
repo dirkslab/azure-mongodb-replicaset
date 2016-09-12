@@ -22,7 +22,7 @@
   "resources": [
     {
       "type": "Microsoft.Storage/storageAccounts",
-      "name": "[concat(parameters('storageSettings').name, copyindex())]",
+      "name": "[concat(parameters('storageSettings').nameAlpha, copyindex(1))]",
       "apiVersion": "2015-06-15",
       "location": "[resourceGroup().location]",
       "copy": {
