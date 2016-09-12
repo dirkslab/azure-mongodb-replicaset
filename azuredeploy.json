@@ -86,13 +86,21 @@
     "AvailabilitySetName": {
       "type": "string",
       "defaultValue": "MyABSet"
+    },
+    "vmalphagroup": {
+      "type": "string",
+      "defaultValue": "alpha"
+    },
+    "vmomegagroup": {
+      "type": "string",
+      "defaultValue": "omega"
     }
   },
   "variables": {
     "templateBaseUrl": "https://raw.githubusercontent.com/dirkslab/azure-mongodb-replicaset/skeleton6/",
     "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'shared-resources.json')]",
-    "storageAccountNamePrefixAlpha": "[concat('alpha', uniqueString(resourceGroup().id))]",
-    "storageAccountNamePrefixOmega": "[concat('omega', uniqueString(resourceGroup().id))]",
+    "storageAccountNamePrefixvmalphagroup": "[concat(parameters('vmalphagroup'), uniqueString(resourceGroup().id))]",
+    "storageAccountNamePrefixvmomegagroup": "[concat(parameters('vmomegagroup'), uniqueString(resourceGroup().id))]",
     "tshirtSizeSmall": {
       "vmSize": "Standard_A1",
       "diskSize": 1023,
@@ -100,7 +108,7 @@
       "vmCount": 2,
       "omegaCount": 1,
       "storage": {
-        "name": "[variables('storageAccountNamePrefixAlpha')]",
+        "name": "[variables('storageAccountNamePrefixvmalphagroup')]",
         "count": 3,
         "pool": "db",
         "map": [
@@ -119,8 +127,8 @@
       "vmCount": 3,
       "omegaCount": 1,
       "storage": {
-        "nameAlpha": "[variables('storageAccountNamePrefixAlpha')]",
-        "nameOmega": "[variables('storageAccountNamePrefixOmega')]",
+        "nameAlpha": "[variables('storageAccountNamePrefixvmalphagroup')]",
+        "nameOmega": "[variables('storageAccountNamePrefixvmomegagroup')]",
         "count": 4,
         "pool": "db",
         "map": [
@@ -140,7 +148,7 @@
       "vmCount": 3,
       "omegaCount": 2,
       "storage": {
-        "name": "[variables('storageAccountNamePrefixAlpha')]",
+        "name": "[variables('storageAccountNamePrefixvmalphagroup')]",
         "count": 2,
         "pool": "db",
         "map": [
@@ -158,7 +166,7 @@
       "vmCount": 4,
       "omegaCount": 3,
       "storage": {
-        "name": "[variables('storageAccountNamePrefixAlpha')]",
+        "name": "[variables('storageAccountNamePrefixvmalphagroup')]",
         "count": 2,
         "pool": "db",
         "map": [
@@ -213,6 +221,10 @@
       "name": "[parameters('AvailabilitySetName')]",
       "fdCount": 3,
       "udCount": 5
+    },
+    "vmGroups": {
+      "vmgrpalpha": "[parameters('vmalphagroup')]",
+      "vmgrpomega": "[parameters('vmomegagroup')]"
     }
   },
     "resources": [
@@ -235,6 +247,11 @@
             },
             "networkSettings": {
               "value": "[variables('networkSettings')]"
+            },
+            "commonSettings": {
+              "value": {
+                "vmGroups": "[variables('vmGroups')]"
+              }
             },
             "availabilitySetSettings": {
               "value": "[variables('availabilitySetSettings')]"
@@ -278,7 +295,8 @@
             "commonSettings": {
               "value": {
                 "adminUsername": "[parameters('adminUsername')]",
-                "namespace": "[parameters('vmnameprefix')]"
+                "namespace": "[parameters('vmnameprefix')]",
+                "vmGroups": "[variables('vmGroups')]"
               }
             },
             "storageSettings": {
@@ -341,7 +359,8 @@
             "commonSettings": {
               "value": {
                 "adminUsername": "[parameters('adminUsername')]",
-                "namespace": "[parameters('vmnameprefix')]"
+                "namespace": "[parameters('vmnameprefix')]",
+                "vmGroups": "[variables('vmGroups')]"
               }
             },
             "storageSettings": {
@@ -394,7 +413,7 @@
           "parameters": {
             "storageSettings": {
               "value": {
-                "name": "[concat(variables('storageAccountNamePrefixAlpha'), variables('tshirtSize').storage.jumpbox)]"
+                "name": "[concat(variables('storageAccountNamePrefixvmalphagroup'), variables('tshirtSize').storage.jumpbox)]"
               }
             },
             "dnsName": {
