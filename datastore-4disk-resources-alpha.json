@@ -36,9 +36,9 @@
   "variables": {
     "namespace": "[parameters('commonSettings').namespace]",
     "subnetRef": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('subnet').vnet), '/subnets/', parameters('subnet').name)]",
-    "storageAccountName": "[concat(parameters('storageSettings').name, variables('namespace'))]",
-    "vmName": "[variables('namespace')]",
-    "nicName": "[concat(variables('namespace'), 'nic')]",
+    "storageAccountName": "[concat(parameters('storageSettings').nameAlpha, variables('namespace'))]",
+    "vmName": "[concat(variables('namespace'), 'alpha')]",
+    "nicName": "[concat(variables('namespace'), 'alphanic')]",
     "inboundNATRules": "[concat('Microsoft.Network/loadBalancers/', parameters('lbSettings').lbName, '/inboundNatRules/', 'SSH')]",
     "adminUsername": "[parameters('commonSettings').adminUsername]",
     "vmCount": "[parameters('machineSettings').vmCount]",
@@ -48,7 +48,7 @@
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/loadBalancers/inboundNatRules",
-      "name": "[concat(parameters('lbSettings').lbName, '/', 'SSH', copyindex(1))]",
+      "name": "[concat(parameters('lbSettings').lbName, '/', 'SSH-alpha', copyindex())]",
       "location": "[resourceGroup().location]",
       "copy": {
         "name": "lbNatLoop",
@@ -67,10 +67,10 @@
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[concat(variables('nicName'), copyindex(1))]",
+      "name": "[concat(variables('nicName'), copyindex())]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[concat(variables('inboundNATRules'), copyindex(1))]"
+        "[concat(variables('inboundNATRules'), copyindex())]"
       ],
       "copy": {
         "name": "nicCopyLoop",
@@ -92,7 +92,7 @@
               ],
               "loadBalancerInboundNatRules": [
                 {
-                  "id": "[concat(parameters('lbSettings').lbID,'/inboundNatRules/SSH', copyindex(1))]"
+                  "id": "[concat(parameters('lbSettings').lbID,'/inboundNatRules/SSH', copyindex())]"
                 }
               ]
             }
@@ -103,10 +103,10 @@
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[concat(variables('vmName'), copyindex(1))]",
+      "name": "[concat(variables('vmName'), copyindex())]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), copyindex(1))]"
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), copyindex())]"
       ],
       "copy": {
         "name": "vmCopyLoop",
@@ -120,7 +120,7 @@
           "vmSize": "[parameters('machineSettings').vmSize]"
         },
         "osProfile": {
-          "computername": "[concat(variables('vmName'), copyindex(1))]",
+          "computername": "[concat(variables('vmName'), copyindex())]",
           "adminUsername": "[variables('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
@@ -129,7 +129,7 @@
           "osDisk": {
             "name": "osdisk",
             "vhd": {
-              "uri": "[concat('http://',parameters('storageSettings').nameAlpha, parameters('storageSettings').map[copyindex(1)],'.blob.core.windows.net/vhds/', variables('vmName'), copyindex(1), '-osdisk.vhd')]"
+              "uri": "[concat('http://',parameters('storageSettings').nameAlpha, parameters('storageSettings').map[copyindex()],'.blob.core.windows.net/vhds/', variables('vmName'), copyindex(), '-osdisk.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
@@ -140,7 +140,7 @@
               "diskSizeGB": "[parameters('machineSettings').diskSize]",
               "lun": 0,
               "vhd": {
-                "Uri": "[concat('http://', parameters('storageSettings').nameAlpha, parameters('storageSettings').map[copyindex(1)],'.blob.core.windows.net/vhds/',variables('vmName'), copyindex(1),'-datadisk1.vhd')]"
+                "Uri": "[concat('http://', parameters('storageSettings').nameAlpha, parameters('storageSettings').map[copyindex()],'.blob.core.windows.net/vhds/',variables('vmName'), copyindex(),'-datadisk1.vhd')]"
               },
               "caching": "None",
               "createOption": "Empty"
@@ -150,7 +150,7 @@
               "diskSizeGB": "[parameters('machineSettings').diskSize]",
               "lun": 1,
               "vhd": {
-                "Uri": "[concat('http://', parameters('storageSettings').nameAlpha, parameters('storageSettings').map[copyindex(1)],'.blob.core.windows.net/vhds/',variables('vmName'), copyindex(1),'-datadisk2.vhd')]"
+                "Uri": "[concat('http://', parameters('storageSettings').nameAlpha, parameters('storageSettings').map[copyindex()],'.blob.core.windows.net/vhds/',variables('vmName'), copyindex(),'-datadisk2.vhd')]"
               },
               "caching": "None",
               "createOption": "Empty"
@@ -160,7 +160,7 @@
               "diskSizeGB": "[parameters('machineSettings').diskSize]",
               "lun": 2,
               "vhd": {
-                "Uri": "[concat('http://', parameters('storageSettings').nameAlpha, parameters('storageSettings').map[copyindex(1)],'.blob.core.windows.net/vhds/',variables('vmName'), copyindex(1),'-datadisk3.vhd')]"
+                "Uri": "[concat('http://', parameters('storageSettings').nameAlpha, parameters('storageSettings').map[copyindex()],'.blob.core.windows.net/vhds/',variables('vmName'), copyindex(),'-datadisk3.vhd')]"
               },
               "caching": "None",
               "createOption": "Empty"
@@ -170,7 +170,7 @@
               "diskSizeGB": "[parameters('machineSettings').diskSize]",
               "lun": 3,
               "vhd": {
-                "Uri": "[concat('http://', parameters('storageSettings').nameAlpha, parameters('storageSettings').map[copyindex(1)],'.blob.core.windows.net/vhds/',variables('vmName'), copyindex(1),'-datadisk4.vhd')]"
+                "Uri": "[concat('http://', parameters('storageSettings').nameAlpha, parameters('storageSettings').map[copyindex()],'.blob.core.windows.net/vhds/',variables('vmName'), copyindex(),'-datadisk4.vhd')]"
               },
               "caching": "None",
               "createOption": "Empty"
@@ -180,7 +180,7 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nicName'), copyindex(1)) )]"
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nicName'), copyindex()) )]"
             }
           ]
         }
@@ -188,11 +188,11 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(variables('vmName'), copyindex(1), '/setup-Mongo-repl-server')]",
+      "name": "[concat(variables('vmName'), copyindex(), '/setup-Mongo-repl-server')]",
       "apiVersion": "2015-05-01-preview",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'), copyindex(1))]"
+        "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'), copyindex())]"
       ],
       "copy": {
         "name": "scriptCopyLoop",

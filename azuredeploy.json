@@ -69,7 +69,7 @@
     },
     "vmnameprefix": {
       "type": "string",
-      "defaultValue": "prpmongo0"
+      "defaultValue": "prpmongo"
     },
     "vmSize": {
       "type": "string",
