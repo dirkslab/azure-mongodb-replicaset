@@ -312,9 +312,6 @@
             "networkSettings": {
               "value": "[variables('networkSettings')]"
             },
-            "alphaIpAddress": {
-              "value": "0"
-            },
             "nodeType": {
               "value": "ALPHA"
             },
@@ -377,9 +374,6 @@
             },
             "networkSettings": {
               "value": "[variables('networkSettings')]"
-            },
-            "alphaIpAddress": {
-              "value": "[reference('alpha-node').outputs.alphaip.value]"
             },
             "nodeType": {
               "value": "OMEGA"

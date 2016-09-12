@@ -23,9 +23,6 @@
     "sparkversion": {
       "type": "string"
     },
-    "alphaIpAddress": {
-      "type": "string"
-    },
     "nodeType": {
       "type": "string"
     }
@@ -153,11 +150,5 @@
         }
       }
     }
-  ],
-  "outputs": {
-    "alphaip": {
-      "value": "[reference(concat(variables('nicName'),0)).ipConfigurations[0].properties.privateIPAddress]",
-      "type": "string"
-    }
-  }
+  ]
 }
