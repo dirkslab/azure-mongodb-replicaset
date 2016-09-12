@@ -23,9 +23,6 @@
     "subnet": {
       "type": "object"
     },
-    "sparkversion": {
-      "type": "string"
-    },
     "lbSettings": {
       "type": "object"
     },
