@@ -29,10 +29,7 @@
         "Medium",
         "Large",
         "XLarge"
-      ],
-      "metadata": {
-        "description": "T-shirt size of the Spark deployment"
-      }
+      ]
     },
     "jumpbox": {
       "type": "string",
@@ -40,10 +37,7 @@
       "allowedValues": [
         "Enabled",
         "Disabled"
-      ],
-      "metadata": {
-        "description": "The flag allowing to enable or disable provisioning of the jumpbox VM that can be used to access the Spark environment"
-      }
+      ]
     },
     "virtualNetworkName": {
       "type": "string",
@@ -216,7 +210,7 @@
     "lbID": "[resourceId('Microsoft.Network/loadBalancers',parameters('lbName'))]",
     "frontEndIPConfigID": "[concat(variables('lbID'),'/frontendIPConfigurations/loadBalancerFrontend')]",
     "availabilitySetSettings": {
-      "name": "sparkAvailabilitySet",
+      "name": "[parameters('AvailabilitySetName')]",
       "fdCount": 3,
       "udCount": 5
     }
