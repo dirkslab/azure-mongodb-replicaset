@@ -8,6 +8,9 @@
     "osSettings": {
       "type": "object"
     },
+    "vmScripts": {
+      "type": "object"
+    },
     "storageSettings": {
       "type": "object"
     },
@@ -20,8 +23,11 @@
     "subnet": {
       "type": "object"
     },
-    "sparkversion": {
-      "type": "string"
+    "lbSettings": {
+      "type": "object"
+    },
+    "networkSettings": {
+      "type": "object"
     },
     "nodeType": {
       "type": "string"
@@ -31,8 +37,9 @@
     "namespace": "[parameters('commonSettings').namespace]",
     "subnetRef": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('subnet').vnet), '/subnets/', parameters('subnet').name)]",
     "storageAccountName": "[concat(parameters('storageSettings').name, variables('namespace'))]",
-    "vmName": "[concat(variables('namespace'), 'vm')]",
+    "vmName": "[variables('namespace')]",
     "nicName": "[concat(variables('namespace'), 'nic')]",
+    "inboundNATRules": "[concat('Microsoft.Network/loadBalancers/', parameters('lbSettings').lbName, '/inboundNatRules/', 'SSH')]",
     "adminUsername": "[parameters('commonSettings').adminUsername]",
     "vmCount": "[parameters('machineSettings').vmCount]",
     "numberOfOmegaInstances": "[parameters('machineSettings').numberOfOmegaInstances]"
@@ -129,11 +136,11 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(variables('vmName'), copyindex(), '/install_spark')]",
+      "name": "[concat(variables('vmName'), copyindex(1), '/setup-Mongo-repl-server')]",
       "apiVersion": "2015-05-01-preview",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'), copyindex())]"
+        "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'), copyindex(1))]"
       ],
       "copy": {
         "name": "scriptCopyLoop",
@@ -145,8 +152,8 @@
         "typeHandlerVersion": "1.5",
         "autoUpgradeMinorVersion": true,
         "settings": {
-          "fileUris": "[parameters('osSettings').scripts]",
-          "commandToExecute": "[concat('bash spark-cluster-install.sh -k ',parameters('sparkversion'),' -d ', parameters('alphaIpAddress'),' -s ',variables('numberOfOmegaInstances'),' -m ', parameters('nodeType'))]"
+          "fileUris": "[parameters('vmScripts').scriptsToDownload]",
+          "commandToExecute": "[parameters('vmScripts').commandToExecute]"
         }
       }
     }
