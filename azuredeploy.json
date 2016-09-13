@@ -89,11 +89,11 @@
     },
     "vmalphagroup": {
       "type": "string",
-      "defaultValue": "alpha"
+      "defaultValue": "yin"
     },
     "vmomegagroup": {
       "type": "string",
-      "defaultValue": "omega"
+      "defaultValue": "yang"
     }
   },
   "variables": {
@@ -124,7 +124,7 @@
       "diskSize": 1023,
       "vmTemplate": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources-alpha.json')]",
       "vmTemplateOmega": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources-omega.json')]",
-      "vmCount": 5,
+      "vmCount": 2,
       "omegaCount": 1,
       "storage": {
         "nameAlpha": "[variables('storageAccountNamePrefixvmalphagroup')]",
