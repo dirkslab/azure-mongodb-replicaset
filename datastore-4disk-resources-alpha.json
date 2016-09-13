@@ -92,7 +92,7 @@
               ],
               "loadBalancerInboundNatRules": [
                 {
-                  "id": "[concat(parameters('lbSettings').lbID,'/inboundNatRules/SSH', copyindex())]"
+                  "id": "[concat(parameters('lbSettings').lbID,'/inboundNatRules/SSH', variables('nicName') , copyindex())]"
                 }
               ]
             }
