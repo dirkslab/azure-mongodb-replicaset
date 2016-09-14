@@ -97,7 +97,7 @@
     }
   },
   "variables": {
-    "templateBaseUrl": "https://raw.githubusercontent.com/dirkslab/azure-mongodb-replicaset/skeleton6/",
+    "templateBaseUrl": "https://raw.githubusercontent.com/dirkslab/azure-mongodb-replicaset/skeleton7/",
     "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'shared-resources.json')]",
     "storageAccountNamePrefixvmalphagroup": "[concat(parameters('vmalphagroup'), uniqueString(resourceGroup().id))]",
     "storageAccountNamePrefixvmomegagroup": "[concat(parameters('vmomegagroup'), uniqueString(resourceGroup().id))]",
@@ -124,7 +124,7 @@
       "diskSize": 1023,
       "vmTemplate": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources-alpha.json')]",
       "vmTemplateOmega": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources-omega.json')]",
-      "vmCount": 2,
+      "vmCount": 3,
       "omegaCount": 1,
       "storage": {
         "nameAlpha": "[variables('storageAccountNamePrefixvmalphagroup')]",
@@ -224,8 +224,8 @@
       "udCount": 5
     },
     "vmGroups": {
-      "vmgrpalpha": "[parameters('vmalphagroup')]",
-      "vmgrpomega": "[parameters('vmomegagroup')]"
+      "vmalphagroup": "[parameters('vmalphagroup')]",
+      "vmomegagroup": "[parameters('vmomegagroup')]"
     }
   },
     "resources": [
