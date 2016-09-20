@@ -20,6 +20,15 @@
     "virtualNetworkName": {
       "value": "vnet4"
     },
+    "vnetAddressSpace": {
+      "value": "10.0.0.0/16"
+    },
+    "subnetdmz": {
+      "value": "10.0.0.0/24"
+    },
+    "subnetdata": {
+      "value": "10.0.1.0/24"
+    },
     "publicIPAddressName": {
       "value": "myPublicIP5"
     },
