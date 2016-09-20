@@ -46,6 +46,18 @@
         "description": "Virtual network name"
       }
     },
+    "vnetAddressSpace": {
+      "type": "string",
+      "defaultValue": "10.0.0.0/16"
+    },
+    "subnetdmz": {
+      "type": "string",
+      "defaultValue": "10.0.0.0/24"
+    },
+    "subnetdata": {
+      "type": "string",
+      "defaultValue": "10.0.1.0/24"
+    },
     "publicIPAddressName": {
       "type": "string",
       "defaultValue": "myPublicIP",
@@ -124,7 +136,7 @@
       "diskSize": 1023,
       "vmTemplate": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources-alpha.json')]",
       "vmTemplateOmega": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources-omega.json')]",
-      "vmCount": 3,
+      "vmCount": 2,
       "omegaCount": 1,
       "storage": {
         "nameAlpha": "[variables('storageAccountNamePrefixvmalphagroup')]",
@@ -201,16 +213,16 @@
     },
     "networkSettings": {
       "vnetName": "[parameters('virtualNetworkName')]",
-      "addressPrefix": "10.0.0.0/16",
+      "addressPrefix": "[parameters('vnetAddressSpace')]",
       "subnets": {
         "dmz": {
           "name": "dmz",
-          "prefix": "10.0.0.0/24",
+          "prefix": "[parameters('subnetdmz')]",
           "vnet": "[parameters('virtualNetworkName')]"
         },
         "data": {
           "name": "data",
-          "prefix": "10.0.1.0/24",
+          "prefix": "[parameters('subnetdata')]",
           "vnet": "[parameters('virtualNetworkName')]"
         }
       }
@@ -290,9 +302,6 @@
             "osSettings": {
               "value": "[variables('osSettings')]"
             },
-            "subnet": {
-              "value": "[variables('networkSettings').subnets.data]"
-            },
             "commonSettings": {
               "value": {
                 "adminUsername": "[parameters('adminUsername')]",
@@ -353,9 +362,6 @@
             },
             "osSettings": {
               "value": "[variables('osSettings')]"
-            },
-            "subnet": {
-              "value": "[variables('networkSettings').subnets.data]"
             },
             "commonSettings": {
               "value": {

@@ -20,9 +20,6 @@
     "machineSettings": {
       "type": "object"
     },
-    "subnet": {
-      "type": "object"
-    },
     "lbSettings": {
       "type": "object"
     },
@@ -35,7 +32,8 @@
   },
   "variables": {
     "namespace": "[parameters('commonSettings').namespace]",
-    "subnetRef": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('subnet').vnet), '/subnets/', parameters('subnet').name)]",
+    "subnetdata": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('networkSettings').subnets.data.vnet), '/subnets/', parameters('networkSettings').subnets.data.name)]",
+    //"subnetRef": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('subnet').vnet), '/subnets/', parameters('subnet').name)]",
     "storageAccountName": "[concat(parameters('storageSettings').nameOmega, variables('namespace'))]",
     "vmName": "[concat(variables('namespace'), parameters('commonSettings').vmGroups.vmomegagroup)]",
     "nicName": "[concat(variables('namespace'), parameters('commonSettings').vmGroups.vmomegagroup, 'nic')]",
@@ -81,9 +79,9 @@
           {
             "name": "ipconfig1",
             "properties": {
-              "privateIPAllocationMethod": "Dynamic",
+              "privateIPAllocationMethod": "Static",
               "subnet": {
-                "id": "[variables('subnetRef')]"
+                "id": "[variables('subnetdata')]"
               },
               "loadBalancerBackendAddressPools": [
                 {

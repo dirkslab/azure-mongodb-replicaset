@@ -9,22 +9,22 @@
       "value": "cgnsparkv1"
     },
     "dnsNameforLBIP": {
-      "value": "prpmongorpl3"
+      "value": "prpmongorpl5"
     },
     "lbName": {
-      "value": "prpmongorplLB3"
+      "value": "prpmongorplLB5"
     },
     "tshirtSize": {
       "value": "Medium"
     },
     "virtualNetworkName": {
-      "value": "vnet3"
+      "value": "vnet4"
     },
     "publicIPAddressName": {
-      "value": "myPublicIP3"
+      "value": "myPublicIP5"
     },
     "AvailabilitySetName": {
-      "value": "MyABSet3"
+      "value": "MyABSet5"
     }
   }
 }
