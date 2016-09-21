@@ -9,10 +9,10 @@
       "value": "cgnsparkv1"
     },
     "dnsNameforLBIP": {
-      "value": "prpmongorpl5"
+      "value": "prpmongorpl"
     },
     "lbName": {
-      "value": "prpmongorplLB5"
+      "value": "prpmongorplLB1"
     },
     "tshirtSize": {
       "value": "Medium"
@@ -21,19 +21,25 @@
       "value": "vnet4"
     },
     "vnetAddressSpace": {
-      "value": "10.0.0.0/16"
+      "value": "10.1.0.0/16"
     },
     "subnetdmz": {
-      "value": "10.0.0.0/24"
+      "value": "10.1.0.0/24"
     },
     "subnetdata": {
-      "value": "10.0.1.0/24"
+      "value": "10.1.1.0/24"
     },
     "publicIPAddressName": {
-      "value": "myPublicIP5"
+      "value": "myPublicIP1"
     },
     "AvailabilitySetName": {
-      "value": "MyABSet5"
-    }
+      "value": "MyABSet1"
+    },
+      "vmalphagroup": {
+          "value": "alpha"
+      },
+      "vmomegagroup": {
+          "value": "omega"
+      }
   }
 }
