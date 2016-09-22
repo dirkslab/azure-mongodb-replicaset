@@ -301,13 +301,13 @@ cat /etc/security/limits.d/99-mongodb-nproc.conf
 sed -i:bak '$ a\net.ipv4.tcp_keepalive_time = 120' /etc/yum.conf /etc/sysctl.conf
 }
 
-#Install_step7()
-#{
+Install_step7()
+{
 #yum install https://cloud.mongodb.com/download/agent/automation/mongodb-mms-automation-agent-manager-3.1.0.1831-1.x86_64.rhel7.rpm
 #sed -i:bak '$ a\mmsGroupId= 513d91fd7fe227e9f1855cdb' /etc/mongodb-mms/automation-agent.config
 #sed -i:bak '$ a\mmsGroupId= 88ca1ad3c453cb5bb8dff79ab9aecaeb' /etc/mongodb-mms/automation-agent.config
-#systemctl start mongodb-mms-automation-agent.service
-#}
+systemctl start mongodb-mms-automation-agent.service
+}
 
 Install_step1
 Install_step2
@@ -315,3 +315,4 @@ Install_step3
 Install_step4
 Install_step5
 Install_step6
+Install_step7
