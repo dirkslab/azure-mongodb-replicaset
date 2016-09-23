@@ -111,7 +111,7 @@ exclude=mongodb-org,mongodb-org-server,mongodb-org-shell,mongodb-org-mongos,mong
 # Change the mongod.conf file to use yaml startup script with custom config
 # delete all file content
 
-sudo ex -s +%d +%p +x /etc/mongod.conf
+ex -s +%d +%p +x /etc/mongod.conf
 
 # insert yaml config 
 
@@ -188,7 +188,7 @@ cp -r /usr/lib/tuned/virtual-guest/* /usr/lib/tuned/no-thp
 # Change the /usr/lib/tuned/no-thp/tuned.conf file to include custom parameters [VM] [Disk] to echo back below
 # delete all file content
 
-sudo ex -s +%d +%p +x /usr/lib/tuned/no-thp/tuned.conf
+ex -s +%d +%p +x /usr/lib/tuned/no-thp/tuned.conf
 
 # insert custom config to echo back into /usr/lib/tuned/no-thp/tuned.conf
 
@@ -222,11 +222,11 @@ vm.swappiness = 30" > /usr/lib/tuned/no-thp/tuned.conf
 
 # enable custom tuned profile
 
-sudo tuned-adm profile no-thp 
+tuned-adm profile no-thp 
 
 # check active profiles
 
-sudo tuned-adm active
+tuned-adm active
 
 
 
@@ -303,13 +303,13 @@ sed -i:bak '$ a\net.ipv4.tcp_keepalive_time = 120' /etc/yum.conf /etc/sysctl.con
 
 Install_step7()
 {
-sudo yum -y install https://cloud.mongodb.com/download/agent/automation/mongodb-mms-automation-agent-manager-3.1.0.1831-1.x86_64.rhel7.rpm
+yum -y install https://cloud.mongodb.com/download/agent/automation/mongodb-mms-automation-agent-manager-3.1.0.1831-1.x86_64.rhel7.rpm
 #sed -i:bak '$ a\mmsGroupId= 513d91fd7fe227e9f1855cdb' /etc/mongodb-mms/automation-agent.config
 #sed -i:bak '$ a\mmsGroupId= 88ca1ad3c453cb5bb8dff79ab9aecaeb' /etc/mongodb-mms/automation-agent.config
 #systemctl start mongodb-mms-automation-agent.service
 }
 
-sudo sed -i:bak 's/Defaults    requiretty/#Defaults    requiretty/' /etc/sudoers
+sed -i:bak 's/Defaults    requiretty/#Defaults    requiretty/' /etc/sudoers
 
 Install_step1
 Install_step2
