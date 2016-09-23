@@ -132,7 +132,7 @@ processManagement:
 net:
    port: 27017
 replication:
-   replSetName: "rs1"' > /etc/mongod.conf
+   replSetName: "rs2"' > /etc/mongod.conf
 
 # Create Mongo directories
 
@@ -306,6 +306,7 @@ Install_step7()
 yum -y install https://cloud.mongodb.com/download/agent/automation/mongodb-mms-automation-agent-manager-3.1.0.1831-1.x86_64.rhel7.rpm
 sed -i:bak 's/mmsGroupId=/mmsGroupId=57e3e80c3b34b92da9e86270/' /etc/mongodb-mms/automation-agent.config
 sed -i:bak 's/mmsApiKey=/mmsApiKey=8089dd927f145674473ed02fbb954ca7/' /etc/mongodb-mms/automation-agent.config
+systemctl enable mongodb-mms-automation-agent.service
 systemctl start mongodb-mms-automation-agent.service
 }
 
