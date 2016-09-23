@@ -315,4 +315,5 @@ sudo Install_step3
 sudo Install_step4
 sudo Install_step5
 sudo Install_step6
+sudo yum -y install https://cloud.mongodb.com/download/agent/automation/mongodb-mms-automation-agent-manager-3.1.0.1831-1.x86_64.rhel7.rpm
 #Install_step7
