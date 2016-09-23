@@ -304,7 +304,7 @@ sed -i:bak '$ a\net.ipv4.tcp_keepalive_time = 120' /etc/yum.conf /etc/sysctl.con
 Install_step7()
 {
 yum -y install https://cloud.mongodb.com/download/agent/automation/mongodb-mms-automation-agent-manager-3.1.0.1831-1.x86_64.rhel7.rpm
-sed -i:bak 's/mmsGroupId=/mmsGroupId=513d91fd7fe227e9f1855cdb/' /etc/mongodb-mms/automation-agent.config
+sed -i:bak 's/mmsGroupId=/mmsGroupId=57e3e80c3b34b92da9e86270/' /etc/mongodb-mms/automation-agent.config
 sed -i:bak 's/mmsApiKey=/mmsApiKey=8089dd927f145674473ed02fbb954ca7/' /etc/mongodb-mms/automation-agent.config
 systemctl start mongodb-mms-automation-agent.service
 }
