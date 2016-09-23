@@ -309,10 +309,10 @@ sed -i:bak '$ a\net.ipv4.tcp_keepalive_time = 120' /etc/yum.conf /etc/sysctl.con
 #systemctl start mongodb-mms-automation-agent.service
 #}
 
-Install_step1
-Install_step2
-Install_step3
-Install_step4
-Install_step5
-Install_step6
+sudo Install_step1
+sudo Install_step2
+sudo Install_step3
+sudo Install_step4
+sudo Install_step5
+sudo Install_step6
 #Install_step7
