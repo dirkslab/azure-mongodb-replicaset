@@ -309,7 +309,7 @@ yum -y install https://cloud.mongodb.com/download/agent/automation/mongodb-mms-a
 #systemctl start mongodb-mms-automation-agent.service
 }
 
-sed -i:bak 's/Defaults    requiretty/#Defaults    requiretty/' /etc/sudoers
+sudo sed -i:bak 's/Defaults    requiretty/#Defaults    requiretty/' /etc/sudoers
 
 Install_step1
 Install_step2
