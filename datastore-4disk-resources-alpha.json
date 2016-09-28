@@ -57,7 +57,7 @@
           "id": "[parameters('lbSettings').frontEndIPConfigID]"
         },
         "protocol": "tcp",
-        "frontendPort": "[copyIndex(5010)]",
+        "frontendPort": "[copyIndex(5000)]",
         "backendPort": 22,
         "enableFloatingIP": false
       }
