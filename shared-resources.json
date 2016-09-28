@@ -1,0 +1,64 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "commonSettings": {
+      "type": "object"
+    },
+    "storageSettings": {
+      "type": "object"
+    },
+    "machineSettings": {
+      "type": "object"
+    },
+    "availabilitySetSettings": {
+      "type": "object"
+    },
+    "networkSettings": {
+      "type": "object"
+    },
+    "lbSettings": {
+      "type": "object"
+    }
+  },
+  "variables": { },
+  "resources": [
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[concat(parameters('storageSettings').nameAlpha, copyindex())]",
+      "apiVersion": "2015-06-15",
+      "location": "[resourceGroup().location]",
+      "copy": {
+        "name": "dbStoragePoolLoop",
+        "count": "[parameters('machineSettings').vmCount]"
+      },
+      "properties": {
+        "accountType": "Standard_LRS"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[concat(parameters('storageSettings').nameOmega, copyindex())]",
+      "apiVersion": "2015-06-15",
+      "location": "[resourceGroup().location]",
+      "copy": {
+        "name": "dbStoragePoolLoop",
+        "count": "[parameters('machineSettings').omegaCount]"
+      },
+      "properties": {
+        "accountType": "Standard_LRS"
+      }
+    },
+    {
+      "type": "Microsoft.Compute/availabilitySets",
+      "name": "[parameters('availabilitySetSettings').name]",
+      "apiVersion": "2015-06-15",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "platformFaultDomainCount": "[parameters('availabilitySetSettings').fdCount]",
+        "platformUpdateDomainCount": "[parameters('availabilitySetSettings').udCount]"
+      }
+    }
+  ],
+  "outputs": { }
+}

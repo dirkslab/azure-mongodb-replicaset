@@ -1,0 +1,449 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "domainName": {
+      "type": "string",
+      "metadata": {
+        "description": "Domain name of the public jumpbox"
+      }
+    },
+    "adminUsername": {
+      "type": "string",
+      "defaultValue": "ppadmin",
+      "metadata": {
+        "description": "Virtual machine administrator username"
+      }
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Virtual machine administrator password"
+      }
+    },
+    "tshirtSize": {
+      "type": "string",
+      "defaultValue": "Medium",
+      "allowedValues": [
+        "Small",
+        "Medium",
+        "Large",
+        "XLarge"
+      ]
+    },
+    "jumpbox": {
+      "type": "string",
+      "defaultValue": "Disabled",
+      "allowedValues": [
+        "Enabled",
+        "Disabled"
+      ]
+    },
+    "virtualNetworkName": {
+      "type": "string",
+      "defaultValue": "vnet",
+      "metadata": {
+        "description": "Virtual network name"
+      }
+    },
+    "vnetAddressSpace": {
+      "type": "string",
+      "defaultValue": "10.0.0.0/16"
+    },
+    "subnetdmz": {
+      "type": "string",
+      "defaultValue": "10.0.0.0/24"
+    },
+    "subnetdata": {
+      "type": "string",
+      "defaultValue": "10.0.1.0/24"
+    },
+    "publicIPAddressName": {
+      "type": "string",
+      "defaultValue": "myPublicIP",
+      "metadata": {
+        "description": "Public IP Address Name"
+      }
+    },
+    "dnsNameforLBIP": {
+      "type": "string",
+      "defaultValue": "uniqueDnsNameforLBIP",
+      "metadata": {
+        "description": "Unique DNS name"
+      }
+    },
+    "lbName": {
+      "type": "string",
+      "defaultValue": "myLB",
+      "metadata": {
+        "description": "Load Balancer name"
+      }
+    },
+    "vmnameprefix": {
+      "type": "string",
+      "defaultValue": "prpmongo"
+    },
+    "vmSize": {
+      "type": "string",
+      "defaultValue": "Standard_D2_v2",
+      "allowedValues": [
+        "Standard_A0",
+        "Standard_A1",
+        "Standard_A2",
+        "Standard_A3",
+        "Standard_A4",
+        "Standard_D2_v2"
+      ]
+    },
+    "AvailabilitySetName": {
+      "type": "string",
+      "defaultValue": "MyABSet"
+    },
+    "vmalphagroup": {
+      "type": "string",
+      "defaultValue": "yin"
+    },
+    "vmomegagroup": {
+      "type": "string",
+      "defaultValue": "yang"
+    }
+  },
+  "variables": {
+    "templateBaseUrl": "https://raw.githubusercontent.com/dirkslab/azure-mongodb-replicaset/skull/",
+    "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'shared-resources.json')]",
+    "storageAccountNamePrefixvmalphagroup": "[concat(parameters('vmalphagroup'), uniqueString(resourceGroup().id))]",
+    "storageAccountNamePrefixvmomegagroup": "[concat(parameters('vmomegagroup'), uniqueString(resourceGroup().id))]",
+    "tshirtSizeSmall": {
+      "vmSize": "Standard_A1",
+      "diskSize": 1023,
+      "vmTemplate": "[concat(variables('templateBaseUrl'), 'datastore-2disk-resources.json')]",
+      "vmCount": 2,
+      "omegaCount": 1,
+      "storage": {
+        "name": "[variables('storageAccountNamePrefixvmalphagroup')]",
+        "count": 3,
+        "pool": "db",
+        "map": [
+          0,
+          1,
+          2
+        ],
+        "jumpbox": 0
+      }
+    },
+    "tshirtSizeMedium": {
+      "vmSize": "[parameters('vmSize')]",
+      "diskSize": 1023,
+      "vmTemplate": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources-alpha.json')]",
+      "vmTemplateOmega": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources-omega.json')]",
+      "vmCount": 1,
+      "omegaCount": 1,
+      "storage": {
+        "nameAlpha": "[variables('storageAccountNamePrefixvmalphagroup')]",
+        "nameOmega": "[variables('storageAccountNamePrefixvmomegagroup')]",
+        "count": 4,
+        "pool": "db",
+        "map": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "jumpbox": 0
+      }
+    },
+    "tshirtSizeLarge": {
+      "vmSize": "Standard_A4",
+      "diskSize": 1023,
+      "vmTemplate": "[concat(variables('templateBaseUrl'), 'datastore-16disk-resources.json')]",
+      "vmCount": 3,
+      "omegaCount": 2,
+      "storage": {
+        "name": "[variables('storageAccountNamePrefixvmalphagroup')]",
+        "count": 2,
+        "pool": "db",
+        "map": [
+          0,
+          1,
+          1
+        ],
+        "jumpbox": 0
+      }
+    },
+    "tshirtSizeXLarge": {
+      "vmSize": "Standard_A4",
+      "diskSize": 1023,
+      "vmTemplate": "[concat(variables('templateBaseUrl'), 'datastore-16disk-resources.json')]",
+      "vmCount": 4,
+      "omegaCount": 3,
+      "storage": {
+        "name": "[variables('storageAccountNamePrefixvmalphagroup')]",
+        "count": 2,
+        "pool": "db",
+        "map": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "jumpbox": 0
+      }
+    },
+    "tshirtSize": "[variables(concat('tshirtSize', parameters('tshirtSize')))]",
+    "jumpboxTemplateEnabled": "jumpbox-resources.json",
+    "jumpboxTemplateDisabled": "empty-resources.json",
+    "jumpboxTemplateUrl": "[concat(variables('templateBaseUrl'), variables(concat('jumpboxTemplate',parameters('jumpbox'))))]",
+    "osSettings": {
+      "imageReference": {
+        "publisher": "OpenLogic",
+        "offer": "Centos",
+        "sku": "7.2",
+        "version": "latest"
+      }
+    },
+    "vmScripts": {
+      "scriptsToDownload": [
+        "[concat(variables('templateBaseUrl'), 'mongodb-repl-setup.sh')]",
+        "[concat(variables('templateBaseUrl'), 'mongobackupsetup.sh')]"
+      ],
+      "commandToExecute": "bash mongodb-repl-setup.sh",
+      "commandToExecute2": "bash mongobackupsetup.sh"
+    },
+    "networkSettings": {
+      "vnetName": "[parameters('virtualNetworkName')]",
+      "addressPrefix": "[parameters('vnetAddressSpace')]",
+      "subnets": {
+        "dmz": {
+          "name": "dmz",
+          "prefix": "[parameters('subnetdmz')]",
+          "vnet": "[parameters('virtualNetworkName')]"
+        },
+        "data": {
+          "name": "data",
+          "prefix": "[parameters('subnetdata')]",
+          "vnet": "[parameters('virtualNetworkName')]"
+        }
+      }
+    },
+    "publicIPAddressID": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIPAddressName'))]",
+    "lbID": "[resourceId('Microsoft.Network/loadBalancers',parameters('lbName'))]",
+    "frontEndIPConfigID": "[concat(variables('lbID'),'/frontendIPConfigurations/loadBalancerFrontend')]",
+    "availabilitySetSettings": {
+      "name": "[parameters('AvailabilitySetName')]",
+      "fdCount": 3,
+      "udCount": 5
+    },
+    "vmGroups": {
+      "vmalphagroup": "[parameters('vmalphagroup')]",
+      "vmomegagroup": "[parameters('vmomegagroup')]"
+    }
+  },
+    "resources": [
+      {
+        "name": "shared",
+        "type": "Microsoft.Resources/deployments",
+        "apiVersion": "2015-01-01",
+        "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+            "uri": "[variables('sharedTemplateUrl')]",
+            "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+            "machineSettings": {
+              "value": "[variables('tshirtSize')]"
+            },
+            "storageSettings": {
+              "value": "[variables('tshirtSize').storage]"
+            },
+            "networkSettings": {
+              "value": "[variables('networkSettings')]"
+            },
+            "commonSettings": {
+              "value": {
+                "vmGroups": "[variables('vmGroups')]"
+              }
+            },
+            "availabilitySetSettings": {
+              "value": "[variables('availabilitySetSettings')]"
+            },
+            "lbsettings": {
+              "value": {
+                "lbName": "[parameters('lbName')]",
+                "publicIPAddressName": "[parameters('publicIPAddressName')]",
+                "dnsNameforLBIP": "[parameters('dnsNameforLBIP')]",
+                "publicIPAddressID": "[variables('publicIPAddressID')]",
+                "lbID": "[variables('lbID')]",
+                "frontEndIPConfigID": "[variables('frontEndIPConfigID')]"
+              }
+            }
+          }
+        }
+      },
+      {
+        "name": "alpha-node",
+        "type": "Microsoft.Resources/deployments",
+        "apiVersion": "2015-01-01",
+        "dependsOn": [
+          "[concat('Microsoft.Resources/deployments/', 'shared')]"
+        ],
+        "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+            "uri": "[variables('tshirtSize').vmTemplate]",
+            "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+            "adminPassword": {
+              "value": "[parameters('adminPassword')]"
+            },
+            "osSettings": {
+              "value": "[variables('osSettings')]"
+            },
+            "commonSettings": {
+              "value": {
+                "adminUsername": "[parameters('adminUsername')]",
+                "namespace": "[parameters('vmnameprefix')]",
+                "vmGroups": "[variables('vmGroups')]"
+              }
+            },
+            "storageSettings": {
+              "value": "[variables('tshirtSize').storage]"
+            },
+            "machineSettings": {
+              "value": {
+                "vmSize": "[variables('tshirtSize').vmSize]",
+                "diskSize": "[variables('tshirtSize').diskSize]",
+                "vmCount": "[variables('tshirtSize').vmCount]",
+                "availabilitySet": "[variables('availabilitySetSettings').name]",
+                "numberOfOmegaInstances": "[variables('tshirtSize').omegaCount]"
+              }
+            },
+            "lbsettings": {
+              "value": {
+                "lbName": "[parameters('lbName')]",
+                "publicIPAddressName": "[parameters('publicIPAddressName')]",
+                "dnsNameforLBIP": "[parameters('dnsNameforLBIP')]",
+                "publicIPAddressID": "[variables('publicIPAddressID')]",
+                "lbID": "[variables('lbID')]",
+                "frontEndIPConfigID": "[variables('frontEndIPConfigID')]"
+              }
+            },
+            "networkSettings": {
+              "value": "[variables('networkSettings')]"
+            },
+            "nodeType": {
+              "value": "ALPHA"
+            },
+            "vmScripts": {
+              "value": "[variables('vmScripts')]"
+            }
+          }
+        }
+      },
+      {
+        "name": "omega-node",
+        "type": "Microsoft.Resources/deployments",
+        "apiVersion": "2015-01-01",
+        "dependsOn": [
+          "[concat('Microsoft.Resources/deployments/', 'alpha-node')]"
+        ],
+        "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+            "uri": "[variables('tshirtSize').vmTemplateOmega]",
+            "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+            "adminPassword": {
+              "value": "[parameters('adminPassword')]"
+            },
+            "osSettings": {
+              "value": "[variables('osSettings')]"
+            },
+            "commonSettings": {
+              "value": {
+                "adminUsername": "[parameters('adminUsername')]",
+                "namespace": "[parameters('vmnameprefix')]",
+                "vmGroups": "[variables('vmGroups')]"
+              }
+            },
+            "storageSettings": {
+              "value": "[variables('tshirtSize').storage]"
+            },
+            "machineSettings": {
+              "value": {
+                "vmSize": "[variables('tshirtSize').vmSize]",
+                "diskSize": "[variables('tshirtSize').diskSize]",
+                "vmCount": "[variables('tshirtSize').omegaCount]",
+                "availabilitySet": "[variables('availabilitySetSettings').name]",
+                "numberOfOmegaInstances": "[variables('tshirtSize').omegaCount]"
+              }
+            },
+            "lbsettings": {
+              "value": {
+                "lbName": "[parameters('lbName')]",
+                "publicIPAddressName": "[parameters('publicIPAddressName')]",
+                "dnsNameforLBIP": "[parameters('dnsNameforLBIP')]",
+                "publicIPAddressID": "[variables('publicIPAddressID')]",
+                "lbID": "[variables('lbID')]",
+                "frontEndIPConfigID": "[variables('frontEndIPConfigID')]"
+              }
+            },
+            "networkSettings": {
+              "value": "[variables('networkSettings')]"
+            },
+            "nodeType": {
+              "value": "OMEGA"
+            },
+            "vmScripts": {
+              "value": "[variables('vmScripts')]"
+            }
+          }
+        }
+      },
+      {
+        "name": "jumpbox",
+        "type": "Microsoft.Resources/deployments",
+        "apiVersion": "2015-01-01",
+        "dependsOn": [
+          "[concat('Microsoft.Resources/deployments/', 'shared')]"
+        ],
+        "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+            "uri": "[variables('jumpboxTemplateUrl')]",
+            "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+            "storageSettings": {
+              "value": {
+                "name": "[concat(variables('storageAccountNamePrefixvmalphagroup'), variables('tshirtSize').storage.jumpbox)]"
+              }
+            },
+            "dnsName": {
+              "value": "[parameters('domainName')]"
+            },
+            "commonSettings": {
+              "value": {
+                "adminUsername": "[parameters('adminUsername')]",
+                "namespace": "jumpbox"
+              }
+            },
+            "adminPassword": {
+              "value": "[parameters('adminPassword')]"
+            },
+            "subnet": {
+              "value": "[variables('networkSettings').subnets.dmz]"
+            },
+            "osSettings": {
+              "value": "[variables('osSettings')]"
+            }
+          }
+        }
+      }
+    ],
+    "outputs": { }
+  }
