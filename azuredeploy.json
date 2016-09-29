@@ -105,6 +105,10 @@
       "type": "string",
       "defaultValue": "prpmongo"
     },
+    "vmnamejumpbox": {
+      "type": "string",
+      "defaultValue": "prpjumpbox"
+    },
     "vmSize": {
       "type": "string",
       "defaultValue": "Standard_D2_v2",
@@ -504,7 +508,7 @@
           "commonSettings": {
             "value": {
               "adminUsername": "[parameters('adminUsername')]",
-              "namespace": "prpjumpbox"
+              "namespace": "[parameters('vmnamejumpbox')]"
             }
           },
           "adminPassword": {
