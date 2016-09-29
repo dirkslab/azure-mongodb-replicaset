@@ -39,7 +39,7 @@
       "properties": {
         "publicIPAllocationMethod": "Dynamic",
         "dnsSettings": {
-          "domainNameLabel": "ppjumpboxtest"
+          "domainNameLabel": "[string('ppjumpboxtest')]"
         }
       }
     },
