@@ -500,7 +500,6 @@
         "parameters": {
           "storageSettings": {
             "value": "[variables('tshirtSize').storage]"
-          }
           },
           "dnsName": {
             "value": "[parameters('domainName')]"
@@ -522,6 +521,7 @@
           }
         }
       }
+    }
   ],
     "outputs": { }
   }
