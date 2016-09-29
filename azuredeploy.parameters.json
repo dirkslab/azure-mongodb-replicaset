@@ -6,7 +6,7 @@
       "value": "ppadmin"
     },
     "frontend": {
-      "value": "No"
+      "value": "Yes"
     },
     "domainName": {
       "value": "cgnsparkv1"
@@ -39,13 +39,19 @@
       "value": "MyABSet"
     },
       "vmalphagroup": {
-          "value": "alpha"
+          "value": "day"
       },
       "vmomegagroup": {
-          "value": "omega"
+          "value": "night"
       },
       "vmSize": {
           "value": "Standard_D2_v2"
+      },
+      "lbFrontEndPortStartAlpha": {
+          "value": 60000
+      },
+      "lbFrontEndPortStartOmega": {
+          "value": 50000
       }
   }
 }

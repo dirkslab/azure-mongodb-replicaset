@@ -5,25 +5,25 @@
     "commonSettings": {
       "type": "object"
     },
+    "osSettings": {
+      "type": "object"
+    },
     "storageSettings": {
       "type": "object"
     },
-    "machineSettings": {
+    "adminPassword": {
+      "type": "securestring"
+    },
+    "subnet": {
       "type": "object"
     },
-    "availabilitySetSettings": {
-      "type": "object"
-    },
-    "networkSettings": {
-      "type": "object"
-    },
-    "lbSettings": {
-      "type": "object"
+    "dnsName": {
+      "type": "string"
     }
   },
   "variables": {
     "vmStorageAccountContainerName": "vhd",
-    "subnetRef": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('networkSettings').subnets.data.vnet), '/subnets/', parameters('networkSettings').subnets.data.vnet)]",
+    "subnetRef": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('subnet').vnet), '/subnets/', parameters('subnet').name)]",
     "storageAccountName": "[parameters('storageSettings').name]",
     "nicName": "[concat(parameters('commonSettings').namespace, 'nic')]",
     "vmName": "[concat(parameters('commonSettings').namespace, 'vm')]",
@@ -39,7 +39,7 @@
       "properties": {
         "publicIPAllocationMethod": "Dynamic",
         "dnsSettings": {
-          "domainNameLabel": "[string('ppjumpboxtest')]"
+          "domainNameLabel": "[parameters('dnsName')]"
         }
       }
     },
