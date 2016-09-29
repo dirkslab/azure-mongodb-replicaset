@@ -164,7 +164,8 @@
       "storage": {
         "nameAlpha": "[variables('storageAccountNamePrefixvmalphagroup')]",
         "nameOmega": "[variables('storageAccountNamePrefixvmomegagroup')]",
-        "count": 4,
+        "nameJumpbox": "[variables('storageAccountNameJumpbox')]",
+        "jboxcount": 1,
         "pool": "db",
         "map": [
           0,
@@ -494,9 +495,8 @@
         },
         "parameters": {
           "storageSettings": {
-            "value": {
-              "name": "[concat(variables('storageAccountNameJumpbox'), variables('tshirtSize').storage.jumpbox)]"
-            }
+            "value": "[variables('tshirtSize').storage]"
+          }
           },
           "dnsName": {
             "value": "[parameters('domainName')]"
@@ -504,7 +504,7 @@
           "commonSettings": {
             "value": {
               "adminUsername": "[parameters('adminUsername')]",
-              "namespace": "jumpbox"
+              "namespace": "prpjumpbox"
             }
           },
           "adminPassword": {
