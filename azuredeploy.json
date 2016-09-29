@@ -450,8 +450,8 @@
               "vmSize": "[variables('tshirtSize').vmSize]",
               "diskSize": "[variables('tshirtSize').diskSize]",
               "vmCount": "[variables('tshirtSize').omegaCount]",
-              "lbFrontEndPortStartAlpha": "[parameters('lbFrontEndPortStartAlpha')]",
-              "lbFrontEndPortStartOmega": "[parameters('lbFrontEndPortStartOmega')]"
+              "availabilitySet": "[variables('availabilitySetSettings').name]",
+              "numberOfOmegaInstances": "[variables('tshirtSize').omegaCount]"
             }
           },
           "lbsettings": {
@@ -462,8 +462,8 @@
               "publicIPAddressID": "[variables('publicIPAddressID')]",
               "lbID": "[variables('lbID')]",
               "frontEndIPConfigID": "[variables('frontEndIPConfigID')]",
-              "lbfeportalpha": "[parameters('lbFrontEndPortStartAlpha')]",
-              "lbfeportomega": "[parameters('lbFrontEndPortStartOmega')]"
+              "lbFrontEndPortStartAlpha": "[parameters('lbFrontEndPortStartAlpha')]",
+              "lbFrontEndPortStartOmega": "[parameters('lbFrontEndPortStartOmega')]"
             }
           },
           "networkSettings": {
