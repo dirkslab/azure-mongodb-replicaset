@@ -5,20 +5,20 @@
     "commonSettings": {
       "type": "object"
     },
-    "osSettings": {
-      "type": "object"
-    },
     "storageSettings": {
       "type": "object"
     },
-    "adminPassword": {
-      "type": "securestring"
-    },
-    "subnet": {
+    "machineSettings": {
       "type": "object"
     },
-    "dnsName": {
-      "type": "string"
+    "availabilitySetSettings": {
+      "type": "object"
+    },
+    "networkSettings": {
+      "type": "object"
+    },
+    "lbSettings": {
+      "type": "object"
     }
   },
   "variables": { },
