@@ -47,9 +47,6 @@
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[concat(variables('nicName'), copyindex())]",
       "location": "[resourceGroup().location]",
-      "dependsOn": [
-        ""
-      ],
       "copy": {
         "name": "nicCopyLoop",
         "count": "[variables('vmCount')]"
