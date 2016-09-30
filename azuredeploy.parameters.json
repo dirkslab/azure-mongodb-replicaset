@@ -6,7 +6,7 @@
       "value": "ppadmin"
     },
     "frontend": {
-      "value": "Yes"
+      "value": "No"
     },
     "domainName": {
       "value": "cgnsparkv1"
@@ -52,6 +52,9 @@
       },
       "lbFrontEndPortStartOmega": {
           "value": 50000
+      },
+      "jumpbox": {
+          "value": "Enabled"
       }
   }
 }

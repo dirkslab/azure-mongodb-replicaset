@@ -25,7 +25,7 @@
   "resources": [
     {
       "type": "Microsoft.Storage/storageAccounts",
-      "name": "[concat(parameters('storageSettings').nameJumpbox, copyindex())]",
+      "name": "[concat(parameters('storageSettings').nameJumpbox, copyindex(parameters('storageSettings').jumpbox))]",
       "apiVersion": "2015-06-15",
       "location": "[resourceGroup().location]",
       "copy": {
