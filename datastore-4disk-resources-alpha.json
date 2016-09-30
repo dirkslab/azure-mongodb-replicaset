@@ -62,7 +62,7 @@
               "privateIPAllocationMethod": "Dynamic",
               "subnet": {
                 "id": "[variables('subnetdata')]"
-              },
+              }
             }
           }
         ]
