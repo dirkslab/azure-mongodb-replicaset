@@ -6,7 +6,7 @@
       "value": "ppadmin"
     },
     "frontend": {
-      "value": "No"
+      "value": "Yes"
     },
     "domainName": {
       "value": "cgnsparkv1"
@@ -48,10 +48,10 @@
           "value": "Standard_A2"
       },
       "lbFrontEndPortStartAlpha": {
-          "value": 60006
+          "value": 60000
       },
       "lbFrontEndPortStartOmega": {
-          "value": 50006
+          "value": 50000
       },
       "jumpbox": {
           "value": "Disabled"
