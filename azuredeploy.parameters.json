@@ -39,22 +39,22 @@
       "value": "MyABSet"
     },
       "vmalphagroup": {
-          "value": "day"
+          "value": "his"
       },
       "vmomegagroup": {
-          "value": "night"
+          "value": "hers"
       },
       "vmSize": {
-          "value": "Standard_D2_v2"
+          "value": "Standard_A2"
       },
       "lbFrontEndPortStartAlpha": {
-          "value": 60000
+          "value": 60006
       },
       "lbFrontEndPortStartOmega": {
-          "value": 50000
+          "value": 50006
       },
       "jumpbox": {
-          "value": "Enabled"
+          "value": "Disabled"
       }
   }
 }

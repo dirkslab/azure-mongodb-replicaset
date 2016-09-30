@@ -45,30 +45,11 @@
   "resources": [
     {
       "apiVersion": "2015-06-15",
-      "type": "Microsoft.Network/loadBalancers/inboundNatRules",
-      "name": "[concat(parameters('lbSettings').lbName, '/', 'SSH', variables('nicName'), copyindex())]",
-      "location": "[resourceGroup().location]",
-      "copy": {
-        "name": "lbNatLoop",
-        "count": "[parameters('machineSettings').vmCount]"
-      },
-      "properties": {
-        "frontendIPConfiguration": {
-          "id": "[parameters('lbSettings').frontEndIPConfigID]"
-        },
-        "protocol": "tcp",
-        "frontendPort": "[copyIndex(parameters('lbSettings').lbFrontEndPortStartAlpha)]",
-        "backendPort": 22,
-        "enableFloatingIP": false
-      }
-    },
-    {
-      "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[concat(variables('nicName'), copyindex())]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[concat(variables('inboundNATRules'), copyindex())]"
+        ""
       ],
       "copy": {
         "name": "nicCopyLoop",
@@ -83,16 +64,6 @@
               "subnet": {
                 "id": "[variables('subnetdata')]"
               },
-              "loadBalancerBackendAddressPools": [
-                {
-                  "id": "[concat(parameters('lbSettings').lbID, '/backendAddressPools/LoadBalancerBackend')]"
-                }
-              ],
-              "loadBalancerInboundNatRules": [
-                {
-                  "id": "[concat(parameters('lbSettings').lbID,'/inboundNatRules/SSH', variables('nicName') , copyindex())]"
-                }
-              ]
             }
           }
         ]
