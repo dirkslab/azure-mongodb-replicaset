@@ -521,8 +521,8 @@
           "adminPassword": {
             "value": "[parameters('adminPassword')]"
           },
-          "subnet": {
-            "value": "[variables('networkSettings').subnets.dmz]"
+          "networkSettings": {
+            "value": "[variables('networkSettings')]"
           },
           "osSettings": {
             "value": "[variables('osSettings')]"

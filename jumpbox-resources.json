@@ -14,7 +14,7 @@
     "adminPassword": {
       "type": "securestring"
     },
-    "subnet": {
+    "networkSettings": {
       "type": "object"
     },
     "dnsName": {
@@ -23,7 +23,7 @@
   },
   "variables": {
     "vmStorageAccountContainerName": "vhd",
-    "subnetRef": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('subnet').vnet), '/subnets/', parameters('subnet').name)]",
+    "subnetdata": "[concat(parameters('networkSettings').prpferesourceid,'/providers/','Microsoft.Network/virtualNetworks', parameters('networkSettings').subnets.dmz.vnet, '/subnets/', parameters('networkSettings').subnets.dmz.name)]",
     "storageAccountName": "[parameters('storageSettings').nameJumpbox]",
     "nicName": "[concat(parameters('commonSettings').namespace, 'nic')]",
     "vmName": "[concat(parameters('commonSettings').namespace, 'vm')]",
@@ -61,7 +61,7 @@
                 "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIpName'))]"
               },
               "subnet": {
-                "id": "[variables('subnetRef')]"
+                "id": "[variables('subnetdata')]"
               }
             }
           }
