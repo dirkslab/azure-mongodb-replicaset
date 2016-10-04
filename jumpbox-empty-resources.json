@@ -14,7 +14,7 @@
     "adminPassword": {
       "type": "securestring"
     },
-    "subnet": {
+    "networkSettings": {
       "type": "object"
     },
     "dnsName": {

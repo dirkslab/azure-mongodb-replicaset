@@ -54,7 +54,7 @@
           "value": 50000
       },
       "jumpbox": {
-          "value": "Enabled"
+          "value": "Disabled"
       }
   }
 }
