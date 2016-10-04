@@ -10,7 +10,7 @@
     },
     "prpferesourceid": {
       "type": "string",
-      "defaultValue": "/subscriptions/b3fd3ab8-8f06-469a-acbf-dbeb39acf8ab/resourceGroups/atest-prpmongoleg",
+      "defaultValue": "/subscriptions/b3fd3ab8-8f06-469a-acbf-dbeb39acf8ab/resourceGroups/atest-prpmongoleg/providers/Microsoft.Network/virtualNetworks/prpvnet",
       "metadata": {
         "description": "prp frontend resource ID"
       }
