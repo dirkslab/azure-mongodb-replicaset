@@ -33,7 +33,7 @@
   "variables": {
     "namespace": "[parameters('commonSettings').namespace]",
    // "subnetdata": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('networkSettings').subnets.data.vnet), '/subnets/', parameters('networkSettings').subnets.data.name)]",
-    "subnetdata": "[concat(parameters('networkSettings').prpferesourceid,'Microsoft.Network/virtualNetworks', parameters('networkSettings').subnets.data.vnet, '/subnets/', parameters('networkSettings').subnets.data.name)]",
+    "subnetdata": "[concat(parameters('networkSettings').prpferesourceid,'/Microsoft.Network/virtualNetworks', parameters('networkSettings').subnets.data.vnet, '/subnets/', parameters('networkSettings').subnets.data.name)]",
     //"subnetRef": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('subnet').vnet), '/subnets/', parameters('subnet').name)]",
     //"storageAccountName": "[concat(parameters('storageSettings').nameAlpha, variables('namespace'))]",
     "vmName": "[concat(variables('namespace'), parameters('commonSettings').vmGroups.vmalphagroup)]",
