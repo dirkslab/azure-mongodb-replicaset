@@ -8,11 +8,11 @@
         "description": "Domain name of the public jumpbox"
       }
     },
-    "prpferesourceid": {
+    "prpfevnetresourceid": {
       "type": "string",
-      "defaultValue": "/subscriptions/b3fd3ab8-8f06-469a-acbf-dbeb39acf8ab/resourceGroups/atest-prpmongoleg/providers/Microsoft.Network/virtualNetworks/prpvnet",
+      "defaultValue": "/subscriptions/b3fd3ab8-8f06-469a-acbf-dbeb39acf8ab/resourceGroups/atest-pspmongofrontend/providers/Microsoft.Network/virtualNetworks/prpvnet",
       "metadata": {
-        "description": "prp frontend resource ID"
+        "description": "prp frontend vnet resource ID"
       }
     },
     "adminUsername": {
@@ -144,9 +144,9 @@
   "variables": {
     "templateBaseUrl": "https://raw.githubusercontent.com/dirkslab/azure-mongodb-replicaset/neck/",
     "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'shared-resources.json')]",
-    "storageAccountNamePrefixvmalphagroup": "[concat(parameters('vmalphagroup'), uniqueString(resourceGroup().id))]",
-    "storageAccountNamePrefixvmomegagroup": "[concat(parameters('vmomegagroup'), uniqueString(resourceGroup().id))]",
-    "storageAccountNameJumpbox": "[concat('jumpbox', uniqueString(resourceGroup().id))]",
+    "storageAccountNamePrefixvmalphagroup": "[concat(uniqueString(resourceGroup().id), parameters('vmalphagroup'))]",
+    "storageAccountNamePrefixvmomegagroup": "[concat(uniqueString(resourceGroup().id), parameters('vmomegagroup'))]",
+    "storageAccountNameJumpbox": "[concat(uniqueString(resourceGroup().id), 'jumpbox')]",
     "tshirtSizeSmall": {
       "vmSize": "Standard_A1",
       "diskSize": 1023,
@@ -250,7 +250,7 @@
       "commandToExecute2": "bash mongobackupsetup.sh"
     },
     "networkSettings": {
-      "prpferesourceid": "[parameters('prpferesourceid')]",
+      "prpfevnetresourceid": "[parameters('prpfevnetresourceid')]",
       "vnetName": "[parameters('virtualNetworkName')]",
       "addressPrefix": "[parameters('vnetAddressSpace')]",
       "subnets": {
@@ -270,10 +270,11 @@
     "lbID": "[resourceId('Microsoft.Network/loadBalancers',parameters('lbName'))]",
     "frontEndIPConfigID": "[concat(variables('lbID'),'/frontendIPConfigurations/loadBalancerFrontend')]",
     "availabilitySetSettings": {
-      "name": "[parameters('AvailabilitySetName')]",
+      "name": "[concat(uniqueString(resourceGroup().id), parameters('AvailabilitySetName') )]",
       "fdCount": 3,
       "udCount": 5
     },
+    "vmnameprefix": "[concat(uniqueString(resourceGroup().id) ,parameters('vmnameprefix'))]",
     "vmGroups": {
       "vmalphagroup": "[parameters('vmalphagroup')]",
       "vmomegagroup": "[parameters('vmomegagroup')]"
@@ -389,7 +390,7 @@
           "commonSettings": {
             "value": {
               "adminUsername": "[parameters('adminUsername')]",
-              "namespace": "[parameters('vmnameprefix')]",
+              "namespace": "[variables('vmnameprefix')]",
               "vmGroups": "[variables('vmGroups')]"
             }
           },
@@ -452,7 +453,7 @@
           "commonSettings": {
             "value": {
               "adminUsername": "[parameters('adminUsername')]",
-              "namespace": "[parameters('vmnameprefix')]",
+              "namespace": "[variables('vmnameprefix')]",
               "vmGroups": "[variables('vmGroups')]"
             }
           },

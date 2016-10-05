@@ -9,13 +9,13 @@
       "value": "No"
     },
     "domainName": {
-      "value": "prpmongo2"
+      "value": "prpmongo"
     },
     "dnsNameforLBIP": {
-      "value": "prpmongorpl2"
+      "value": "prpmongorpl"
     },
     "lbName": {
-      "value": "prpmongorplLB2"
+      "value": "prpmongorplLB"
     },
     "tshirtSize": {
       "value": "Medium"
@@ -33,16 +33,13 @@
       "value": "10.2.1.0/24"
     },
     "publicIPAddressName": {
-      "value": "myPublicIP2"
-    },
-    "AvailabilitySetName": {
-      "value": "MyABSet2"
+      "value": "myPublicIP"
     },
       "vmalphagroup": {
-          "value": "ying"
+          "value": "day"
       },
       "vmomegagroup": {
-          "value": "yang"
+          "value": "night"
       },
       "vmSize": {
           "value": "Standard_A2"
@@ -55,6 +52,9 @@
       },
       "jumpbox": {
           "value": "Disabled"
+      },
+      "vmnamejumpbox": {
+          "value": "prpjumpbox"
       }
   }
 }

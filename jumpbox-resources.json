@@ -23,8 +23,8 @@
   },
   "variables": {
     "vmStorageAccountContainerName": "vhd",
-    //"subnetdata": "[concat(parameters('networkSettings').prpferesourceid,'providers','/Microsoft.Network/virtualNetworks/', parameters('networkSettings').subnets.dmz.vnet, '/subnets/', parameters('networkSettings').subnets.dmz.name)]",
-    "subnetdata": "[concat(parameters('networkSettings').prpferesourceid, '/subnets/', parameters('networkSettings').subnets.dmz.name)]",
+    //"subnetdata": "[concat(parameters('networkSettings').prpfevnetresourceid,'providers','/Microsoft.Network/virtualNetworks/', parameters('networkSettings').subnets.dmz.vnet, '/subnets/', parameters('networkSettings').subnets.dmz.name)]",
+    "subnetdata": "[concat(parameters('networkSettings').prpfevnetresourceid, '/subnets/', parameters('networkSettings').subnets.dmz.name)]",
     "storageAccountName": "[parameters('storageSettings').nameJumpbox]",
     "nicName": "[concat(parameters('commonSettings').namespace, 'nic')]",
     "vmName": "[concat(parameters('commonSettings').namespace, 'vm')]",
