@@ -65,6 +65,37 @@ mount -a
 
 Install_step5()
 {
+# Install Mongo
+
+# Create MongoDB repo
+
+# Pre version 3.2
+
+# echo '
+# [mongodb-org-3.0]
+# name=MongoDb Repository
+# baseurl=http://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/3.0/x86_64/
+# gpgcheck=0
+# enabled=1' > /etc/yum.repos.d/mongodb-org-3.0.repo
+
+# 3.2 and later
+
+echo '[mongodb-org-3.2]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/3.2/x86_64/
+gpgcheck=1
+enabled=1
+gpgkey=https://www.mongodb.org/static/pgp/server-3.2.asc' > /etc/yum.repos.d/mongodb-org-3.2.repo
+
+# Install MongoDB
+
+yum install -y mongodb-org
+
+# Exclude MongoDB from /etc/yum.conf to avoid unintended upgrades of MongoDB
+# three options, either place after last line or after specific text pattern (this you must know and hope it does not change) 
+# or  insert after first blank line (must know your file current structure)
+# ref http://www.linuxquestions.org/questions/programming-9/insert-line-on-match-only-once-with-sed-657764/
+
 # Create Mongo directories
 
 mkdir /data_disk/mongo
