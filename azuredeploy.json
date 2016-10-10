@@ -2,7 +2,7 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "domainName": {
+    "jumpboxdnsName": {
       "type": "string",
       "metadata": {
         "description": "Domain name of the public jumpbox"
@@ -170,7 +170,7 @@
       "diskSize": 1023,
       "vmTemplate": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources-alpha.json')]",
       "vmTemplateOmega": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources-omega.json')]",
-      "vmCount": 1,
+      "vmCount": 3,
       "omegaCount": 1,
       "storage": {
         "nameAlpha": "[variables('storageAccountNamePrefixvmalphagroup')]",
@@ -275,6 +275,8 @@
       "udCount": 5
     },
     "vmnameprefix": "[concat(uniqueString(resourceGroup().id) ,parameters('vmnameprefix'))]",
+    "vmnamejumpbox": "[concat(uniqueString(resourceGroup().id) ,parameters('vmnamejumpbox'))]",
+    "jumpboxdnsName": "[concat(uniqueString(resourceGroup().id) ,parameters('jumpboxdnsName'))]",
     "vmGroups": {
       "vmalphagroup": "[parameters('vmalphagroup')]",
       "vmomegagroup": "[parameters('vmomegagroup')]"
@@ -510,13 +512,13 @@
           "storageSettings": {
             "value": "[variables('tshirtSize').storage]"
           },
-          "dnsName": {
-            "value": "[parameters('domainName')]"
+          "jumpboxdnsName": {
+            "value": "[variables('jumpboxdnsName')]"
           },
           "commonSettings": {
             "value": {
               "adminUsername": "[parameters('adminUsername')]",
-              "namespace": "[parameters('vmnamejumpbox')]"
+              "namespace": "[variables('vmnamejumpbox')]"
             }
           },
           "adminPassword": {

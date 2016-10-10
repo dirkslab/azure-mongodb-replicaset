@@ -17,7 +17,7 @@
     "networkSettings": {
       "type": "object"
     },
-    "dnsName": {
+    "jumpboxdnsName": {
       "type": "string"
     }
   },
@@ -40,7 +40,7 @@
       "properties": {
         "publicIPAllocationMethod": "Dynamic",
         "dnsSettings": {
-          "domainNameLabel": "[parameters('dnsName')]"
+          "domainNameLabel": "[parameters('jumpboxdnsName')]"
         }
       }
     },

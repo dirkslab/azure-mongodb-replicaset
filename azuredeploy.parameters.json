@@ -36,10 +36,10 @@
       "value": "myPublicIP"
     },
       "vmalphagroup": {
-          "value": "day"
+          "value": "alpha"
       },
       "vmomegagroup": {
-          "value": "night"
+          "value": "omega"
       },
       "vmSize": {
           "value": "Standard_A2"
@@ -51,7 +51,7 @@
           "value": 50000
       },
       "jumpbox": {
-          "value": "Disabled"
+          "value": "Enabled"
       },
       "vmnamejumpbox": {
           "value": "prpjumpbox"
