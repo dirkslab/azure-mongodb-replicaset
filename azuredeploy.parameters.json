@@ -8,7 +8,7 @@
     "frontend": {
       "value": "No"
     },
-    "domainName": {
+    "jumpboxdnsName": {
       "value": "prpmongo"
     },
     "dnsNameforLBIP": {
@@ -35,26 +35,26 @@
     "publicIPAddressName": {
       "value": "myPublicIP"
     },
-      "vmalphagroup": {
-          "value": "alpha"
-      },
-      "vmomegagroup": {
-          "value": "omega"
-      },
-      "vmSize": {
-          "value": "Standard_A2"
-      },
-      "lbFrontEndPortStartAlpha": {
-          "value": 60000
-      },
-      "lbFrontEndPortStartOmega": {
-          "value": 50000
-      },
-      "jumpbox": {
-          "value": "Enabled"
-      },
-      "vmnamejumpbox": {
-          "value": "prpjumpbox"
-      }
+    "vmalphagroup": {
+      "value": "alpha"
+    },
+    "vmomegagroup": {
+      "value": "omega"
+    },
+    "vmSize": {
+      "value": "Standard_A2"
+    },
+    "lbFrontEndPortStartAlpha": {
+      "value": 60000
+    },
+    "lbFrontEndPortStartOmega": {
+      "value": 50000
+    },
+    "jumpbox": {
+      "value": "Enabled"
+    },
+    "vmnamejumpbox": {
+      "value": "prpjumpbox"
+    }
   }
 }
