@@ -111,28 +111,11 @@ gpgkey=https://www.mongodb.org/static/pgp/server-3.2.asc' > /etc/yum.repos.d/mon
 # Change the mongod.conf file to use yaml startup script with custom config
 # delete all file content
 
-ex -s +%d +%p +x /etc/mongod.conf
+##ex -s +%d +%p +x /etc/mongod.conf
 
 # insert yaml config 
 
-echo 'systemLog:
-   destination: file
-   path: "/data_disk/mongo/logs/mongod.log"
-   logAppend: true
-   logRotate: rename
-storage:
-   dbPath: "/data_disk/mongo/data"
-   engine: wiredTiger
-   directoryPerDB: true
-   journal:
-      enabled: true
-processManagement:
-   fork: true
-   pidFilePath: "/var/run/mongodb/mongod.pid"
-net:
-   port: 27017
-replication:
-   replSetName: "rs2"' > /etc/mongod.conf
+##
 
 # Create Mongo directories
 
@@ -142,7 +125,7 @@ mkdir -p /data_disk/mongo/data
 
 # change ownership and group
 
-sudo chown -R mongod:mongod /data_disk
+chown -R mongod:mongod /data_disk
 ##chown -R mongod:mongod /data_disk/mongo
 ##chown -R mongod:mongod /data_disk/mongo/logs
 ##chown -R mongod:mongod /data_disk/mongo/data
