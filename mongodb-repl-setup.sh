@@ -119,10 +119,7 @@ echo 'systemLog:
    destination: file
    path: "/data_disk/mongo/logs/mongod.log"
    logAppend: true
-   logRotate:
-      timeThresholdHrs: 24
-      numUncompressed: 5
-      percentOfDiskspace: .02
+   logRotate: rename
 storage:
    dbPath: "/data_disk/mongo/data"
    engine: wiredTiger
