@@ -89,7 +89,7 @@ gpgkey=https://www.mongodb.org/static/pgp/server-3.2.asc' > /etc/yum.repos.d/mon
 
 # Install MongoDB
 
-## yum install -y mongodb-org
+yum install -y mongodb-org
 
 # Exclude MongoDB from /etc/yum.conf to avoid unintended upgrades of MongoDB
 # three options, either place after last line or after specific text pattern (this you must know and hope it does not change) 
