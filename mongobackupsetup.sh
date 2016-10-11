@@ -96,6 +96,47 @@ yum install -y mongodb-org
 # or  insert after first blank line (must know your file current structure)
 # ref http://www.linuxquestions.org/questions/programming-9/insert-line-on-match-only-once-with-sed-657764/
 
+# append after last line
+# sed -i:bak '$ a\exclude=mongodb-org,mongodb-org-server,mongodb-org-shell,mongodb-org-mongos,mongodb-org-tools' /etc/yum.conf 
+
+# append after PATTERN /distroverpkg=centos-release/ found
+# sed -i:bak '/distroverpkg=centos-release/a\exclude=mongodb-org,mongodb-org-server,mongodb-org-shell,mongodb-org-mongos,mongodb-org-tools' /etc/yum.conf 
+
+#  inserting above first open line
+ 
+sed -i:bak '1,/^$/ {/^$/i\
+exclude=mongodb-org,mongodb-org-server,mongodb-org-shell,mongodb-org-mongos,mongodb-org-tools
+}' /etc/yum.conf
+
+# Change the mongod.conf file to use yaml startup script with custom config
+# delete all file content
+
+ex -s +%d +%p +x /etc/mongod.conf
+
+# insert yaml config 
+
+echo 'systemLog:
+   destination: file
+   path: "/data_disk/mongo/logs/mongod.log"
+   logAppend: true
+   logRotate:
+      timeThresholdHrs: 24
+      numUncompressed: 5
+      percentOfDiskspace: .02
+storage:
+   dbPath: "/data_disk/mongo/data"
+   engine: wiredTiger
+   directoryPerDB: true
+   journal:
+      enabled: true
+processManagement:
+   fork: true
+   pidFilePath: "/var/run/mongodb/mongod.pid"
+net:
+   port: 27017
+replication:
+   replSetName: "rs2"' > /etc/mongod.conf
+
 # Create Mongo directories
 
 mkdir /data_disk/mongo
