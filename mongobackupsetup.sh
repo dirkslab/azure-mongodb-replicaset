@@ -89,7 +89,7 @@ gpgkey=https://www.mongodb.org/static/pgp/server-3.2.asc' > /etc/yum.repos.d/mon
 
 # Install MongoDB
 
-yum install -y mongodb-org
+## yum install -y mongodb-org
 
 # Exclude MongoDB from /etc/yum.conf to avoid unintended upgrades of MongoDB
 # three options, either place after last line or after specific text pattern (this you must know and hope it does not change) 
@@ -104,9 +104,9 @@ yum install -y mongodb-org
 
 #  inserting above first open line
  
-sed -i:bak '1,/^$/ {/^$/i\
-exclude=mongodb-org,mongodb-org-server,mongodb-org-shell,mongodb-org-mongos,mongodb-org-tools
-}' /etc/yum.conf
+##sed -i:bak '1,/^$/ {/^$/i\
+##exclude=mongodb-org,mongodb-org-server,mongodb-org-shell,mongodb-org-mongos,mongodb-org-tools
+##}' /etc/yum.conf
 
 # Change the mongod.conf file to use yaml startup script with custom config
 # delete all file content
@@ -136,9 +136,9 @@ replication:
 
 # Create Mongo directories
 
-mkdir /data_disk/mongo
-mkdir /data_disk/mongo/logs
-mkdir /data_disk/mongo/data
+mkdir -p /data_disk/mongo
+mkdir -p /data_disk/mongo/logs
+mkdir -p /data_disk/mongo/data
 
 # change ownership and group
 
