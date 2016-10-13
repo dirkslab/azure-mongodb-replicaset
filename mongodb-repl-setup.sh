@@ -104,31 +104,48 @@ yum install -y mongodb-org
 
 #  inserting above first open line
  
-##sed -i:bak '1,/^$/ {/^$/i\
-##exclude=mongodb-org,mongodb-org-server,mongodb-org-shell,mongodb-org-mongos,mongodb-org-tools
-##}' /etc/yum.conf
+sed -i:bak '1,/^$/ {/^$/i\
+exclude=mongodb-org,mongodb-org-server,mongodb-org-shell,mongodb-org-mongos,mongodb-org-tools
+}' /etc/yum.conf
 
 # Change the mongod.conf file to use yaml startup script with custom config
 # delete all file content
 
-##ex -s +%d +%p +x /etc/mongod.conf
+ex -s +%d +%p +x /etc/mongod.conf
 
 # insert yaml config 
 
-##
+echo 'systemLog:
+   destination: file
+   path: "/data_disk/mongo/logs/mongod.log"
+   logAppend: true
+   logRotate: rename
+storage:
+   dbPath: "/data_disk/mongo/data"
+   engine: wiredTiger
+   directoryPerDB: true
+   journal:
+      enabled: true
+processManagement:
+   fork: true
+   pidFilePath: "/var/run/mongodb/mongod.pid"
+net:
+   port: 27017
+replication:
+   replSetName: "rs2"' > /etc/mongod.conf
 
 # Create Mongo directories
 
-mkdir -p /data_disk/mongo
-mkdir -p /data_disk/mongo/logs
-mkdir -p /data_disk/mongo/data
+mkdir /data_disk/mongo
+mkdir /data_disk/mongo/logs
+mkdir /data_disk/mongo/data
 
 # change ownership and group
 
 chown -R mongod:mongod /data_disk
-##chown -R mongod:mongod /data_disk/mongo
-##chown -R mongod:mongod /data_disk/mongo/logs
-##chown -R mongod:mongod /data_disk/mongo/data
+chown -R mongod:mongod /data_disk/mongo
+chown -R mongod:mongod /data_disk/mongo/logs
+chown -R mongod:mongod /data_disk/mongo/data
 
 # setup log rotation by using linux cron job to run bash script
 # first create your bash script.
