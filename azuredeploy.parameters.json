@@ -1,0 +1,60 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "adminUsername": {
+      "value": "ppadmin"
+    },
+    "frontend": {
+      "value": "No"
+    },
+    "jumpboxdnsName": {
+      "value": "prpmongo"
+    },
+    "dnsNameforLBIP": {
+      "value": "prpmongorpl"
+    },
+    "lbName": {
+      "value": "prpmongorplLB"
+    },
+    "tshirtSize": {
+      "value": "Medium"
+    },
+    "virtualNetworkName": {
+      "value": "prpvnet"
+    },
+    "vnetAddressSpace": {
+      "value": "10.2.0.0/16"
+    },
+    "subnetdmz": {
+      "value": "10.2.0.0/24"
+    },
+    "subnetdata": {
+      "value": "10.2.1.0/24"
+    },
+    "publicIPAddressName": {
+      "value": "myPublicIP"
+    },
+    "vmalphagroup": {
+      "value": "alpha"
+    },
+    "vmomegagroup": {
+      "value": "omega"
+    },
+    "vmSize": {
+      "value": "Standard_A2"
+    },
+    "lbFrontEndPortStartAlpha": {
+      "value": 60000
+    },
+    "lbFrontEndPortStartOmega": {
+      "value": 50000
+    },
+    "jumpbox": {
+      "value": "Enabled"
+    },
+    "vmnamejumpbox": {
+      "value": "prpjumpbox"
+    }
+  }
+}
