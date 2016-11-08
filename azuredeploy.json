@@ -1,13 +1,25 @@
 ﻿{
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
-  "parameters": {   
+  "parameters": {
     "virtualNetworkName": {
       "type": "string",
       "defaultValue": "vnet",
       "metadata": {
         "description": "Virtual network name"
       }
+    },
+    "vnetAddressSpace": {
+      "type": "string",
+      "defaultValue": "10.0.0.0/16"
+    },
+    "subnetdmz": {
+      "type": "string",
+      "defaultValue": "10.0.0.0/24"
+    },
+    "subnetdata": {
+      "type": "string",
+      "defaultValue": "10.0.1.0/24"
     },
     "publicIPAddressName": {
       "type": "string",
@@ -33,19 +45,19 @@
   },
   "variables": {
     "templateBaseUrl": "https://raw.githubusercontent.com/dirkslab/azure-mongodb-replicaset/publicLBsetup/",
-    "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'shared-resources.json')]",
+    "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'sharedfrontend-resources.json')]",
     "networkSettings": {
       "vnetName": "[parameters('virtualNetworkName')]",
-      "addressPrefix": "10.0.0.0/16",
+      "addressPrefix": "[parameters('vnetAddressSpace')]",
       "subnets": {
         "dmz": {
           "name": "dmz",
-          "prefix": "10.0.0.0/24",
+          "prefix": "[parameters('subnetdmz')]",
           "vnet": "[parameters('virtualNetworkName')]"
         },
         "data": {
           "name": "data",
-          "prefix": "10.0.1.0/24",
+          "prefix": "[parameters('subnetdata')]",
           "vnet": "[parameters('virtualNetworkName')]"
         }
       }
@@ -54,34 +66,34 @@
     "lbID": "[resourceId('Microsoft.Network/loadBalancers',parameters('lbName'))]",
     "frontEndIPConfigID": "[concat(variables('lbID'),'/frontendIPConfigurations/loadBalancerFrontend')]"
   },
-  "resources": [
-    {
-      "name": "shared",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('sharedTemplateUrl')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "networkSettings": {
-            "value": "[variables('networkSettings')]"
+    "resources": [
+      {
+        "name": "sharedfrontend",
+        "type": "Microsoft.Resources/deployments",
+        "apiVersion": "2015-01-01",
+        "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+            "uri": "[variables('sharedTemplateUrl')]",
+            "contentVersion": "1.0.0.0"
           },
-          "lbsettings": {
-            "value": {
-              "lbName": "[parameters('lbName')]",
-              "publicIPAddressName": "[parameters('publicIPAddressName')]",
-              "dnsNameforLBIP": "[parameters('dnsNameforLBIP')]",
-              "publicIPAddressID": "[variables('publicIPAddressID')]",
-              "lbID": "[variables('lbID')]",
-              "frontEndIPConfigID": "[variables('frontEndIPConfigID')]"
+          "parameters": {
+            "networkSettings": {
+              "value": "[variables('networkSettings')]"
+            },
+            "lbsettings": {
+              "value": {
+                "lbName": "[parameters('lbName')]",
+                "publicIPAddressName": "[parameters('publicIPAddressName')]",
+                "dnsNameforLBIP": "[parameters('dnsNameforLBIP')]",
+                "publicIPAddressID": "[variables('publicIPAddressID')]",
+                "lbID": "[variables('lbID')]",
+                "frontEndIPConfigID": "[variables('frontEndIPConfigID')]"
+              }
             }
           }
         }
       }
-    }
-  ],
-  "outputs": { }
-}
+    ],
+    "outputs": { }
+  }
