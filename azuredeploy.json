@@ -170,7 +170,7 @@
       "diskSize": 1023,
       "vmTemplate": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources-alpha.json')]",
       "vmTemplateOmega": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources-omega.json')]",
-      "alphavmCount": 2,
+      "alphavmCount": 1,
       "omegavmCount": 1,
       "storage": {
         "nameAlpha": "[variables('storageAccountNamePrefixvmalphagroup')]",

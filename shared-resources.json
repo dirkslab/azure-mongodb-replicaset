@@ -43,7 +43,7 @@
       "location": "[resourceGroup().location]",
       "copy": {
         "name": "dbStoragePoolLoop",
-        "count": "[parameters('machineSettings').vmCount]"
+        "count": "[parameters('machineSettings').alphavmCount]"
       },
       "properties": {
         "accountType": "Standard_LRS"
@@ -56,7 +56,7 @@
       "location": "[resourceGroup().location]",
       "copy": {
         "name": "dbStoragePoolLoop",
-        "count": "[parameters('machineSettings').omegaCount]"
+        "count": "[parameters('machineSettings').omegavmCount]"
       },
       "properties": {
         "accountType": "Standard_LRS"
