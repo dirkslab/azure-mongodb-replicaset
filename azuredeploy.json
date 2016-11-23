@@ -142,7 +142,7 @@
     }
   },
   "variables": {
-    "templateBaseUrl": "https://raw.githubusercontent.com/dirkslab/azure-mongodb-replicaset/neck/",
+    "templateBaseUrl": "https://raw.githubusercontent.com/dirkslab/azure-mongodb-replicaset/Chin/",
     "sharedTemplateUrl": "[concat(variables('templateBaseUrl'), 'shared-resources.json')]",
     "storageAccountNamePrefixvmalphagroup": "[concat(uniqueString(resourceGroup().id), parameters('vmalphagroup'))]",
     "storageAccountNamePrefixvmomegagroup": "[concat(uniqueString(resourceGroup().id), parameters('vmomegagroup'))]",
@@ -151,8 +151,8 @@
       "vmSize": "Standard_A1",
       "diskSize": 1023,
       "vmTemplate": "[concat(variables('templateBaseUrl'), 'datastore-2disk-resources.json')]",
-      "vmCount": 2,
-      "omegaCount": 1,
+      "alphavmCount": 2,
+      "omegavmCount": 1,
       "storage": {
         "name": "[variables('storageAccountNamePrefixvmalphagroup')]",
         "count": 3,
@@ -170,8 +170,8 @@
       "diskSize": 1023,
       "vmTemplate": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources-alpha.json')]",
       "vmTemplateOmega": "[concat(variables('templateBaseUrl'), 'datastore-4disk-resources-omega.json')]",
-      "vmCount": 2,
-      "omegaCount": 1,
+      "alphavmCount": 2,
+      "omegavmCount": 1,
       "storage": {
         "nameAlpha": "[variables('storageAccountNamePrefixvmalphagroup')]",
         "nameOmega": "[variables('storageAccountNamePrefixvmomegagroup')]",
@@ -193,8 +193,8 @@
       "vmSize": "Standard_A4",
       "diskSize": 1023,
       "vmTemplate": "[concat(variables('templateBaseUrl'), 'datastore-16disk-resources.json')]",
-      "vmCount": 3,
-      "omegaCount": 2,
+      "alphavmCount": 3,
+      "omegavmCount": 2,
       "storage": {
         "name": "[variables('storageAccountNamePrefixvmalphagroup')]",
         "count": 2,
@@ -211,8 +211,8 @@
       "vmSize": "Standard_A4",
       "diskSize": 1023,
       "vmTemplate": "[concat(variables('templateBaseUrl'), 'datastore-16disk-resources.json')]",
-      "vmCount": 4,
-      "omegaCount": 3,
+      "alphavmCount": 4,
+      "omegavmCount": 3,
       "storage": {
         "name": "[variables('storageAccountNamePrefixvmalphagroup')]",
         "count": 2,
@@ -403,9 +403,9 @@
             "value": {
               "vmSize": "[variables('tshirtSize').vmSize]",
               "diskSize": "[variables('tshirtSize').diskSize]",
-              "vmCount": "[variables('tshirtSize').vmCount]",
-              "availabilitySet": "[variables('availabilitySetSettings').name]",
-              "numberOfOmegaInstances": "[variables('tshirtSize').omegaCount]"
+              "vmCount": "[variables('tshirtSize').alphavmCount]",
+              "availabilitySet": "[variables('availabilitySetSettings').name]"
+              //"numberOfOmegaInstances": "[variables('tshirtSize').omegavmCount]"
             }
           },
           "lbsettings": {
@@ -466,9 +466,9 @@
             "value": {
               "vmSize": "[variables('tshirtSize').vmSize]",
               "diskSize": "[variables('tshirtSize').diskSize]",
-              "vmCount": "[variables('tshirtSize').omegaCount]",
-              "availabilitySet": "[variables('availabilitySetSettings').name]",
-              "numberOfOmegaInstances": "[variables('tshirtSize').omegaCount]"
+              "vmCount": "[variables('tshirtSize').omegavmCount]",
+              "availabilitySet": "[variables('availabilitySetSettings').name]"
+              //"numberOfOmegaInstances": "[variables('tshirtSize').omegavmCount]"
             }
           },
           "lbsettings": {
