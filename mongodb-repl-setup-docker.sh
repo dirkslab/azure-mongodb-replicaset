@@ -4,6 +4,7 @@
 # Install linux vm with attached data disks
 # Script based on 4x Data disks
 
+sleep 120s
 
 Install_step1()
 {
@@ -42,6 +43,7 @@ chmod 755 /data_disk
 Install_step2a()
 {
 hdd=$(find /dev/sd* ! -path "/dev/sda*" ! -path "/dev/sdb*")
+#hdd=$(find /dev/sd* ! -path "/dev/sda*")
 #if [[ $hdd == *1* ]] && echo "It's there" || echo "Couldn't find"
 [[ $hdd == *1* ]] && echo "Cannot use. It contains existing partition!" 1>&2 >./mdadm.log || Install_step2
 }
