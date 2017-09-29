@@ -412,9 +412,9 @@ systemctl enable docker
 systemctl start docker
 
 #run mongodb from docker image
-echo '#!/bin/bash
 
-docker run -d --restart always -p 27017:27017 -v /data_disk/mongodb/data:/data/db --name=mongo mongo:latest' > /etc/scripts/mongodbdocker.sh
+docker run -d --restart always -p 27017:27017 -v /data_disk/mongodb/data:/data/db --name=mongo mongo:latest
+
 
 
 }
