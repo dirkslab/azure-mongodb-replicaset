@@ -10,8 +10,8 @@ Install_step1()
 {
 # Enable swap file on the linux machine through azure agent file waagent.conf and disable selinux using the ex search replace editor
 
-#ex -s +%s/ResourceDisk.EnableSwap=n/ResourceDisk.EnableSwap=y/g +%p +x /etc/waagent.conf
-#ex -s +%s/ResourceDisk.SwapSizeMB=0/ResourceDisk.SwapSizeMB=5120/g +%p +x /etc/waagent.conf
+ex -s +%s/ResourceDisk.EnableSwap=n/ResourceDisk.EnableSwap=y/g +%p +x /etc/waagent.conf
+ex -s +%s/ResourceDisk.SwapSizeMB=0/ResourceDisk.SwapSizeMB=5120/g +%p +x /etc/waagent.conf
 ex -s +%s/SELINUX=enforcing/SELINUX=disabled/g +%p +x /etc/selinux/config
 echo 0 > /selinux/enforce
 }
@@ -424,9 +424,9 @@ docker run -d --restart always -p 27017:27017 -v /data_disk/mongodb/data:/data/d
 sed -i:bak 's/Defaults    requiretty/#Defaults    requiretty/' /etc/sudoers
 
 #Install_step1
-#Install_step2a #depends on Install_step2
-#Install_step3
-#Install_step4
+Install_step2a #depends on Install_step2
+Install_step3
+Install_step4
 #Install_step5
 #Install_step6
 #Install_step7
