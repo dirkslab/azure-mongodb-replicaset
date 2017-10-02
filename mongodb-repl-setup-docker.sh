@@ -19,7 +19,7 @@ echo 0 > /selinux/enforce
 Install_step2()
 {
 #create a var listing available disks to partition
-#hdd=$(find /dev/sd* ! -path "/dev/sda*" ! -path "/dev/sdb*")
+hdd=$(find /dev/sd* ! -path "/dev/sda*" ! -path "/dev/sdb*")
 for i in $hdd;do
 echo "n
 p
