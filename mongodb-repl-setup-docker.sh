@@ -423,7 +423,7 @@ docker run -d --restart always -p 27017:27017 -v /data_disk/mongodb/data:/data/d
 
 sed -i:bak 's/Defaults    requiretty/#Defaults    requiretty/' /etc/sudoers
 
-#Install_step1
+Install_step1
 Install_step2a #depends on Install_step2
 Install_step3
 Install_step4
