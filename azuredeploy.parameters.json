@@ -12,13 +12,13 @@
       "value": "prpvnet"
     },
     "vnetAddressSpace": {
-      "value": "10.2.0.0/16"
+      "value": "10.3.0.0/16"
     },
     "subnetdmz": {
-      "value": "10.2.0.0/24"
+      "value": "10.3.0.0/24"
     },
     "subnetdata": {
-      "value": "10.2.1.0/24"
+      "value": "10.3.1.0/24"
     },
     "publicIPAddressName": {
       "value": "myPublicIPx"
